@@ -7,12 +7,14 @@ public class Player : MonoBehaviour
     private CharacterController playerPhysics;
     private Vector3 moveDirection;
     private int jumpsCount;
+    private bool onAir = false;
 
     public static bool playerActive = true, cloudActive = false;
     public AudioSource Walking, Other;
     public AudioClip landing, jumping;
 
-    bool onAir = false;
+    public static Vector3 position;
+   
 
     private void Start()
     {
@@ -25,11 +27,14 @@ public class Player : MonoBehaviour
         // TODO Freeze Controller when game ends
         //if (GameState.IsGameFinished()) return;
 
+        position = transform.position;
+
         // Switch between boy and cloud with Tab key
         if (Input.GetButtonDown("Switch"))
         {
             playerActive = !playerActive;
             cloudActive = !cloudActive;
+            if (playerActive == false) Walking.Stop();
         }
 
         if (playerActive || !playerPhysics.isGrounded)
@@ -39,7 +44,7 @@ public class Player : MonoBehaviour
             if (playerPhysics.isGrounded && onAir)
             {
                 onAir = false;
-                print("landing");
+                // print("landing");
                 Other.PlayOneShot(landing);
                 jumpsCount = 0;
             }
@@ -49,7 +54,7 @@ public class Player : MonoBehaviour
                 if (jumpsCount < 2)
                 {
                     onAir = true;
-                    print("jumping");
+                    // print("jumping");
                     Other.PlayOneShot(jumping);
                     moveDirection = new Vector3(playerPhysics.velocity.x, JumpForce);
                     jumpsCount++;

@@ -18,6 +18,10 @@ public class Cloud : MonoBehaviour
         {
             transform.position = new Vector3(transform.position.x + Input.GetAxis("Horizontal") * moveSpeed, transform.position.y);
         }
+        if (Player.position.x > transform.position.x)
+        {
+            transform.position = new Vector3(Player.position.x, transform.position.y, transform.position.z);
+        }
     }
 
     private void Update()
