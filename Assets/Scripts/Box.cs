@@ -3,6 +3,7 @@
 public class Box : MonoBehaviour
 {
     public float speed;
+
     private void OnTriggerStay(Collider other)
     {
         if (other.CompareTag("Player") && Player.playerActive)

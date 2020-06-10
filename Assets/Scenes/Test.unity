@@ -323,7 +323,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 8c7ebe0b96cde7048a191179a39ac0d2, type: 3}
+  m_audioClip: {fileID: 8300000, guid: f2047ae017b09d446880990ccb837472, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 0.4
   m_Pitch: 1
@@ -806,6 +806,76 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -5724557873047716080, guid: c54ea1ba4f92ad740b05ad5daa6ca9d6,
+        type: 3}
+      propertyPath: m_PlayOnAwake
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -5724557873047716080, guid: c54ea1ba4f92ad740b05ad5daa6ca9d6,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -5724557873047716080, guid: c54ea1ba4f92ad740b05ad5daa6ca9d6,
+        type: 3}
+      propertyPath: m_audioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: ee98612fa93c62f4090e48b3fc129e93, type: 3}
+    - target: {fileID: -5724557873047716080, guid: c54ea1ba4f92ad740b05ad5daa6ca9d6,
+        type: 3}
+      propertyPath: BypassEffects
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -5724557873047716080, guid: c54ea1ba4f92ad740b05ad5daa6ca9d6,
+        type: 3}
+      propertyPath: m_Pitch
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: -5724557873047716080, guid: c54ea1ba4f92ad740b05ad5daa6ca9d6,
+        type: 3}
+      propertyPath: m_Volume
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8669729533931874432, guid: c54ea1ba4f92ad740b05ad5daa6ca9d6,
+        type: 3}
+      propertyPath: playerAudio
+      value: 
+      objectReference: {fileID: 794476759}
+    - target: {fileID: 8669729533931874432, guid: c54ea1ba4f92ad740b05ad5daa6ca9d6,
+        type: 3}
+      propertyPath: jumping
+      value: 
+      objectReference: {fileID: 8300000, guid: 34f7ff6f97c822d43815e72225a55bba, type: 3}
+    - target: {fileID: 8669729533931874432, guid: c54ea1ba4f92ad740b05ad5daa6ca9d6,
+        type: 3}
+      propertyPath: landing
+      value: 
+      objectReference: {fileID: 8300000, guid: c012edebef049054496dd521a88e6d68, type: 3}
+    - target: {fileID: 8669729533931874432, guid: c54ea1ba4f92ad740b05ad5daa6ca9d6,
+        type: 3}
+      propertyPath: leftStep
+      value: 
+      objectReference: {fileID: 8300000, guid: 2655a2ede8208a646a259a127dd1540b, type: 3}
+    - target: {fileID: 8669729533931874432, guid: c54ea1ba4f92ad740b05ad5daa6ca9d6,
+        type: 3}
+      propertyPath: rightStep
+      value: 
+      objectReference: {fileID: 8300000, guid: 9354bb7249ec4fd4a9864f063dc9b6e2, type: 3}
+    - target: {fileID: 8669729533931874432, guid: c54ea1ba4f92ad740b05ad5daa6ca9d6,
+        type: 3}
+      propertyPath: walking
+      value: 
+      objectReference: {fileID: 8300000, guid: ee98612fa93c62f4090e48b3fc129e93, type: 3}
+    - target: {fileID: 8669729533931874432, guid: c54ea1ba4f92ad740b05ad5daa6ca9d6,
+        type: 3}
+      propertyPath: Walking
+      value: 
+      objectReference: {fileID: 794476759}
+    - target: {fileID: 8669729533931874432, guid: c54ea1ba4f92ad740b05ad5daa6ca9d6,
+        type: 3}
+      propertyPath: Other
+      value: 
+      objectReference: {fileID: 389377684}
     - target: {fileID: 8669729533931874439, guid: c54ea1ba4f92ad740b05ad5daa6ca9d6,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1153,6 +1223,12 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 601360072}
   m_PrefabAsset: {fileID: 0}
+--- !u!82 &794476759 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: -5724557873047716080, guid: c54ea1ba4f92ad740b05ad5daa6ca9d6,
+    type: 3}
+  m_PrefabInstance: {fileID: 601360072}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &835319835
 GameObject:
   m_ObjectHideFlags: 0
@@ -1385,7 +1461,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 18.9, y: 0.1, z: -24.83}
+  m_LocalPosition: {x: 19.8, y: 0.1, z: -31.78}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}

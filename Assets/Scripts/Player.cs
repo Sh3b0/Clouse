@@ -7,7 +7,12 @@ public class Player : MonoBehaviour
     private CharacterController playerPhysics;
     private Vector3 moveDirection;
     private int jumpsCount;
+
     public static bool playerActive = true, cloudActive = false;
+    public AudioSource Walking, Other;
+    public AudioClip landing, jumping;
+
+    bool onAir = false;
 
     private void Start()
     {
@@ -31,8 +36,11 @@ public class Player : MonoBehaviour
         {
             moveDirection = new Vector3(Input.GetAxis("Horizontal") * MoveSpeed, moveDirection.y);
 
-            if (playerPhysics.isGrounded)
+            if (playerPhysics.isGrounded && onAir)
             {
+                onAir = false;
+                print("landing");
+                Other.PlayOneShot(landing);
                 jumpsCount = 0;
             }
 
@@ -40,6 +48,9 @@ public class Player : MonoBehaviour
             {
                 if (jumpsCount < 2)
                 {
+                    onAir = true;
+                    print("jumping");
+                    Other.PlayOneShot(jumping);
                     moveDirection = new Vector3(playerPhysics.velocity.x, JumpForce);
                     jumpsCount++;
                 }
@@ -48,6 +59,14 @@ public class Player : MonoBehaviour
             moveDirection.y += Physics.gravity.y * GravityScale * Time.deltaTime;
 
             if (!playerPhysics.enabled) { return; }
+
+
+            if (moveDirection.x != 0 && !onAir)
+            {
+                if(!Walking.isPlaying) Walking.Play();
+            }
+            else Walking.Stop();
+
             playerPhysics.Move(moveDirection * Time.deltaTime);
         }
     }
@@ -57,6 +76,8 @@ public class Player : MonoBehaviour
     {
         // TODO Freeze Controller when game ends
         //if (GameState.IsGameFinished()) return;
+
+        // Play Die sound
 
         playerPhysics.enabled = false;
         playerActive = false;
