@@ -8,6 +8,7 @@ TagManager:
   - Cloud
   - Icon
   - LighteningBall
+  - Floating
   layers:
   - Default
   - TransparentFX
