@@ -16,6 +16,8 @@ public class Generator : MonoBehaviour
     {
         if (other.CompareTag("Cloud")) Ready = false;
     }
+
+    /* // Old code 
     private void OnCollisionEnter(Collision collision) // Generator is hit.
     {
         if (collision.collider.gameObject.CompareTag("LighteningBall"))
@@ -26,4 +28,5 @@ public class Generator : MonoBehaviour
             GameObject.FindWithTag("Icon").GetComponent<SpriteRenderer>().color = Color.green;
         }
     }
+    */
 }
