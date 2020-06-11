@@ -624,6 +624,7 @@ PlayerSettings:
       daydreamIconForeground: {fileID: 0}
       daydreamIconBackground: {fileID: 0}
   cloudServicesEnabled:
+    Collab: 1
     UNet: 1
   luminIcon:
     m_Name: 
@@ -637,10 +638,10 @@ PlayerSettings:
     m_VersionCode: 1
     m_VersionName: 
   apiCompatibilityLevel: 6
-  cloudProjectId: 
+  cloudProjectId: 614c6d57-d198-4007-98a5-e9ef636e8af4
   framebufferDepthMemorylessMode: 0
-  projectName: 
-  organizationId: 
+  projectName: Clouse
+  organizationId: el-electrony
   cloudEnabled: 0
   enableNativePlatformBackendsForNewInputSystem: 0
   disableOldInputManagerSupport: 0

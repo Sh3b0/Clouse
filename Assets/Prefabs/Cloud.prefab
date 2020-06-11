@@ -4879,8 +4879,9 @@ MonoBehaviour:
   moveSpeed: 0.5
   lightSpeed: 100
   Rain: {fileID: 5736659952067744439}
-  LighteningBallPrefab: {fileID: 1210590479040855039, guid: f8f55c2473fb1fa4bac5de5999cfbc36,
-    type: 3}
+  lightningRayPrefab: {fileID: 0}
+  lightningEffectPrefab: {fileID: 0}
+  SkillBar: {fileID: 0}
 --- !u!54 &5736659953460114980
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -4895,5 +4896,5 @@ Rigidbody:
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 124
   m_CollisionDetection: 0

@@ -1,32 +1,33 @@
 ﻿using UnityEngine;
 
-public class Mirror : MonoBehaviour {
+public class Mirror : MonoBehaviour
+{
     public GameObject KeyIcon;
-        
     private bool moved;
+    // public AnimationClip GlassTurns, GlassReturns;
 
-    private void Start() {
-        KeyIcon.SetActive(false);
-    }
-
-    private void OnTriggerStay(Collider other)
+    [System.Obsolete]
+    private void Update()
     {
-        if (other.CompareTag("Player"))
+        if (KeyIcon.active)
         {
-            if (!moved && Input.GetButton("Interact"))
+            if (Input.GetButtonDown("Interact"))
             {
-                GetComponent<Animation>().Play();
-                moved = true;
+                if(!moved) GetComponent<Animation>().Play("GlassTurns");
+                else GetComponent<Animation>().Play("GlassReturns");
+                moved = !moved;
             }
         }
     }
-    
-    private void OnTriggerEnter(Collider other) {
+
+    private void OnTriggerEnter(Collider other)
+    {
         if (!other.CompareTag("Player")) return;
         KeyIcon.SetActive(true);
     }
-    
-    private void OnTriggerExit(Collider other) {
+
+    private void OnTriggerExit(Collider other)
+    {
         if (!other.CompareTag("Player")) return;
         KeyIcon.SetActive(false);
     }

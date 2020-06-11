@@ -7,7 +7,6 @@ public class Cloud : MonoBehaviour
     public ParticleSystem Rain;
     public GameObject lightningRayPrefab, lightningEffectPrefab;
     public SkillBarController SkillBar;
-
     public enum Mode
     {
         IDLE = 0, RAIN = 1, LIGHTNING = 2, ICE = 3
