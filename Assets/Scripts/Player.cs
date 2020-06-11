@@ -4,6 +4,7 @@ public class Player : MonoBehaviour
 {
     public float MoveSpeed, JumpForce, GravityScale;
 
+    public SkillBarController SkillBar;
     private CharacterController playerPhysics;
     private Vector3 moveDirection;
     private int jumpsCount;
@@ -11,6 +12,7 @@ public class Player : MonoBehaviour
 
     private void Start()
     {
+        SkillBar.gameObject.SetActive(false);
         playerPhysics = GetComponent<CharacterController>();
         jumpsCount = 0;
     }
@@ -25,6 +27,10 @@ public class Player : MonoBehaviour
         {
             playerActive = !playerActive;
             cloudActive = !cloudActive;
+            
+            // Enable Cloud skill bar
+            SkillBar.gameObject.SetActive(cloudActive);
+            if (cloudActive) { SkillBar.Initialize(); }
         }
 
         if (playerActive || !playerPhysics.isGrounded)

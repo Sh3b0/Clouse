@@ -5,6 +5,8 @@ public class Cloud : MonoBehaviour
     public float moveSpeed, lightSpeed;
     public ParticleSystem Rain;
     public GameObject LighteningBallPrefab;
+    public SkillBarController SkillBar;
+    
     public enum Mode
     {
         IDLE = 0, RAIN = 1, LIGHTINING = 2, ICE = 3
@@ -30,11 +32,13 @@ public class Cloud : MonoBehaviour
             state = Mode.RAIN;
             print("Raining"); // Play some rain sound/animation.
             Rain.Play();
+            SkillBar.ActivateSkill(0); // TODO Change magic number to constant ot hash code
         }
         else if (state == Mode.RAIN && Input.GetButtonUp("Rain"))
         {
             state = Mode.IDLE;
             Rain.Stop(); // Stop the raining sound/animation
+            SkillBar.DeactivateSkill(0);
         }
 
         // 2 - Lightening
@@ -66,11 +70,13 @@ public class Cloud : MonoBehaviour
         {
             state = Mode.ICE;
             print("Ice"); // Play some ice sound/animation.
+            SkillBar.ActivateSkill(2);
         }
         else if (state == Mode.ICE && Input.GetButtonUp("Ice"))
         {
             state = Mode.IDLE;
             // Stop the ice sound/animation
+            SkillBar.DeactivateSkill(2);
         }
 
     }
