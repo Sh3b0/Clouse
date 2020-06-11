@@ -4,20 +4,15 @@ public class Player : MonoBehaviour
 {
     public float MoveSpeed, JumpForce, GravityScale;
 
+    public SkillBarController SkillBar;
     private CharacterController playerPhysics;
     private Vector3 moveDirection;
     private int jumpsCount;
-    private bool onAir = false;
-
     public static bool playerActive = true, cloudActive = false;
-    public AudioSource Walking, Other;
-    public AudioClip landing, jumping;
-
-    public static Vector3 position;
-   
 
     private void Start()
     {
+        SkillBar.gameObject.SetActive(false);
         playerPhysics = GetComponent<CharacterController>();
         jumpsCount = 0;
     }
@@ -27,25 +22,23 @@ public class Player : MonoBehaviour
         // TODO Freeze Controller when game ends
         //if (GameState.IsGameFinished()) return;
 
-        position = transform.position;
-
         // Switch between boy and cloud with Tab key
         if (Input.GetButtonDown("Switch"))
         {
             playerActive = !playerActive;
             cloudActive = !cloudActive;
-            if (playerActive == false) Walking.Stop();
+            
+            // Enable Cloud skill bar
+            SkillBar.gameObject.SetActive(cloudActive);
+            if (cloudActive) { SkillBar.Initialize(); }
         }
 
         if (playerActive || !playerPhysics.isGrounded)
         {
             moveDirection = new Vector3(Input.GetAxis("Horizontal") * MoveSpeed, moveDirection.y);
 
-            if (playerPhysics.isGrounded && onAir)
+            if (playerPhysics.isGrounded)
             {
-                onAir = false;
-                // print("landing");
-                Other.PlayOneShot(landing);
                 jumpsCount = 0;
             }
 
@@ -53,9 +46,6 @@ public class Player : MonoBehaviour
             {
                 if (jumpsCount < 2)
                 {
-                    onAir = true;
-                    // print("jumping");
-                    Other.PlayOneShot(jumping);
                     moveDirection = new Vector3(playerPhysics.velocity.x, JumpForce);
                     jumpsCount++;
                 }
@@ -64,14 +54,6 @@ public class Player : MonoBehaviour
             moveDirection.y += Physics.gravity.y * GravityScale * Time.deltaTime;
 
             if (!playerPhysics.enabled) { return; }
-
-
-            if (moveDirection.x != 0 && !onAir)
-            {
-                if(!Walking.isPlaying) Walking.Play();
-            }
-            else Walking.Stop();
-
             playerPhysics.Move(moveDirection * Time.deltaTime);
         }
     }
@@ -81,8 +63,6 @@ public class Player : MonoBehaviour
     {
         // TODO Freeze Controller when game ends
         //if (GameState.IsGameFinished()) return;
-
-        // Play Die sound
 
         playerPhysics.enabled = false;
         playerActive = false;

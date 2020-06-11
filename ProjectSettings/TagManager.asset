@@ -9,7 +9,6 @@ TagManager:
   - Icon
   - LighteningBall
   - Floating
-  - Ground
   layers:
   - Default
   - TransparentFX
