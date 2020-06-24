@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4263403850566049461}
   m_Layer: 0
   m_Name: Icon
-  m_TagString: Icon
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -97,7 +97,7 @@ GameObject:
   - component: {fileID: 4263403851676277772}
   m_Layer: 0
   m_Name: Generator
-  m_TagString: Untagged
+  m_TagString: Generator
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -175,7 +175,7 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 4
+  m_Radius: 1
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &4263403851676277808
 MonoBehaviour:
@@ -189,6 +189,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ddb44ba3e4bbe284583bb6c11bf5fb4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ConnectedMechanism: {fileID: 0}
+  Icon: {fileID: 4263403850566049461}
 --- !u!65 &4263403851676277772
 BoxCollider:
   m_ObjectHideFlags: 0

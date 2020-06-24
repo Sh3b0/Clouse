@@ -11,12 +11,11 @@ GameObject:
   - component: {fileID: 3136404684789368084}
   - component: {fileID: 3136404684789368083}
   - component: {fileID: 3136404684789368082}
-  - component: {fileID: 3136404684789368080}
-  - component: {fileID: 3136404684789368081}
-  - component: {fileID: 3136404684789368078}
+  - component: {fileID: 2580194481108118266}
+  - component: {fileID: 7496266205735897601}
   m_Layer: 0
   m_Name: Glass
-  m_TagString: Untagged
+  m_TagString: Mirror
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -28,13 +27,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3136404684789368087}
-  m_LocalRotation: {x: -0.12504418, y: -0.012680871, z: 0.43200034, w: 0.8930728}
-  m_LocalPosition: {x: 0.38, y: 0, z: 0.022}
+  m_LocalRotation: {x: -0.08715578, y: 0, z: 0, w: 0.9961947}
+  m_LocalPosition: {x: 0, y: 0.75, z: 0}
   m_LocalScale: {x: 2, y: 0.02, z: 2}
   m_Children: []
   m_Father: {fileID: 3136404685560346933}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: -12.2630005, y: -7.6860003, z: 52.455}
+  m_LocalEulerAnglesHint: {x: -10, y: 0, z: 0}
 --- !u!33 &3136404684789368083
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -82,36 +81,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!111 &3136404684789368080
-Animation:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3136404684789368087}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Animation: {fileID: 7400000, guid: da1654e30b5c8fd4387c3159f6e102fd, type: 2}
-  m_Animations:
-  - {fileID: 7400000, guid: da1654e30b5c8fd4387c3159f6e102fd, type: 2}
-  m_WrapMode: 0
-  m_PlayAutomatically: 0
-  m_AnimatePhysics: 0
-  m_CullingType: 0
---- !u!65 &3136404684789368081
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3136404684789368087}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 2.2173736, y: 105.0011, z: 2}
-  m_Center: {x: 0.08990002, y: 2.5007393, z: 0.00000011927486}
---- !u!114 &3136404684789368078
+--- !u!114 &2580194481108118266
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -123,8 +93,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab595089d44db024da14f8f2395886bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  KeyIcon: {fileID: 3136404686121973995}
-  mirrorRotation: {fileID: 7400000, guid: da1654e30b5c8fd4387c3159f6e102fd, type: 2}
+  keyIcon: {fileID: 3136404686121973995}
+  lightningPrefab: {fileID: 178460, guid: a84cb58ef7faa67488076810242453b9, type: 3}
+  rotationSpeed: 0.2
+  _reflectionAngle: 0
+  mirrorType: 0
+--- !u!135 &7496266205735897601
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3136404684789368087}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 1
+  m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
 --- !u!1 &3136404684839671378
 GameObject:
   m_ObjectHideFlags: 0
@@ -136,7 +122,7 @@ GameObject:
   - component: {fileID: 3136404684839671379}
   - component: {fileID: 3136404684839671374}
   - component: {fileID: 3136404684839671377}
-  - component: {fileID: 3136404684839671375}
+  - component: {fileID: 7693032374874627621}
   m_Layer: 0
   m_Name: Stand
   m_TagString: Untagged
@@ -152,8 +138,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3136404684839671378}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.38, y: -0.85, z: 0}
-  m_LocalScale: {x: 0.2, y: 0.7, z: 0.2}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.2, y: 0.75, z: 0.2}
   m_Children: []
   m_Father: {fileID: 3136404685560346933}
   m_RootOrder: 0
@@ -205,7 +191,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!65 &3136404684839671375
+--- !u!65 &7693032374874627621
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -216,8 +202,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 6.9542694, y: 3.4354358, z: 23.144228}
-  m_Center: {x: 0.03276825, y: 0.71771777, z: -0.433079}
+  m_Size: {x: 10, y: 3.5, z: 1.0000002}
+  m_Center: {x: 0, y: 0.8, z: 0}
 --- !u!1 &3136404685560346932
 GameObject:
   m_ObjectHideFlags: 0
@@ -241,7 +227,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3136404685560346932}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0.08715578, y: 0, z: 0, w: 0.9961947}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -250,7 +236,7 @@ Transform:
   - {fileID: 3136404686121973992}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -10, y: 0, z: 0}
 --- !u!1 &3136404686121973995
 GameObject:
   m_ObjectHideFlags: 0
@@ -276,8 +262,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3136404686121973995}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.42499924, y: 2.751, z: -1}
-  m_LocalScale: {x: 2.4, y: 2.6, z: 0.19999999}
+  m_LocalPosition: {x: 0, y: 2, z: 0}
+  m_LocalScale: {x: 0.2, y: 0.2, z: 0.2}
   m_Children: []
   m_Father: {fileID: 3136404685560346933}
   m_RootOrder: 2
@@ -321,12 +307,12 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 85df3682a3eff5b44be4d554662be093, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 0a72f8eb023da81409a768634eabbd19, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 0.52, y: 0.52}
+  m_Size: {x: 5, y: 5}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1

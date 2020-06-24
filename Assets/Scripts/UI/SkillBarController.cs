@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class SkillBarController : MonoBehaviour {
@@ -15,8 +16,16 @@ public class SkillBarController : MonoBehaviour {
         SkillsIcons[skillIndex].color = new Color32(255, 255, 255, 255);
     }
 
-    public void DeactivateSkill(int skillIndex) {
+    private void DeactivateSkill(int skillIndex) {
         SkillsIcons[skillIndex].color = new Color32(255, 255, 255, 90);
+    }
+
+    public IEnumerator BlinkSkill(int skillIndex)
+    {
+        ActivateSkill(skillIndex);
+        yield return new WaitForSeconds(0.1f);
+        DeactivateSkill(skillIndex);
+        Cloud.state = Cloud.Mode.Idle;
     }
     
 }

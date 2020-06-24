@@ -1,19 +1,17 @@
 ﻿using UnityEngine;
+
 public class Generator : MonoBehaviour
 {
-    public static bool Ready = false;
-    public static Vector3 position;
-    private void Start()
+    // This is what generator activates
+    public Mechanism ConnectedMechanism;
+    public SpriteRenderer Icon;
+
+    public void Work() // Do the intended function of the generator. 
     {
-        position = transform.position;
-    }
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("Cloud"))
-            Ready = true;
-    }
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.CompareTag("Cloud")) Ready = false;
+        if (Icon.color != Color.green) // Activate once.
+        {
+            Icon.color = Color.green;
+            if (ConnectedMechanism != null) ConnectedMechanism.Work();
+        }
     }
 }

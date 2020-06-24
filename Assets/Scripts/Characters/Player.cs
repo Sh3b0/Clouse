@@ -2,60 +2,72 @@
 
 public class Player : MonoBehaviour
 {
-    public float MoveSpeed, JumpForce, GravityScale;
+    public static float moveSpeed = 10, jumpForce = 19, gravityScale = 6;
     public static Transform me;
-    public SkillBarController SkillBar;
-    private CharacterController playerPhysics;
-    private Vector3 moveDirection;
-    private int jumpsCount;
-    public static bool playerActive = true, cloudActive = false, jumpingEnabled = true;
+    public static bool playerActive = true, cloudActive, jumpingEnabled = true, isGrounded;
+    public static bool isMovingBox;
+    public PlayerAnimation anim;
+    public SkillBarController skillBar;
+    
+    private CharacterController _playerPhysics;
+    private Vector3 _moveDirection;
+    private int _jumpsCount;
 
-    private void Start()
-    {
-        SkillBar.gameObject.SetActive(false);
-        playerPhysics = GetComponent<CharacterController>();
-        jumpsCount = 0;
+    private void Start() {
+        isMovingBox = false;
+        me = transform;
+        skillBar.gameObject.SetActive(false);
+        _playerPhysics = GetComponent<CharacterController>();
+        _jumpsCount = 0;
     }
 
     private void Update()
     {
-        me = transform;
+        isGrounded = _playerPhysics.isGrounded;
         // TODO Freeze Controller when game ends
         //if (GameState.IsGameFinished()) return;
 
-        // Switch between boy and cloud with Tab key
-        if (Input.GetButtonDown("Switch"))
+        // Switch between player and cloud with Tab key
+        if ((playerActive || cloudActive) && Input.GetButtonUp("Switch"))
         {
             playerActive = !playerActive;
             cloudActive = !cloudActive;
+            skillBar.gameObject.SetActive(cloudActive);
+            if (cloudActive) skillBar.Initialize();
             
-            // Enable Cloud skill bar
-            SkillBar.gameObject.SetActive(cloudActive);
-            if (cloudActive) { SkillBar.Initialize(); }
+            anim.Push(.000f);
+            anim.Move(.0f);
         }
 
-        if (playerActive || !playerPhysics.isGrounded)
+        if (playerActive || !_playerPhysics.isGrounded) {
+            var horizontalInput = Input.GetAxis("Horizontal");
+            _moveDirection = new Vector3(horizontalInput * moveSpeed, _moveDirection.y);
+
+            if (_playerPhysics.isGrounded) _jumpsCount = 0;
+
+            if (jumpingEnabled && _jumpsCount < 2 && Input.GetButtonDown("Jump"))
+            {
+                _moveDirection = new Vector3(_playerPhysics.velocity.x, jumpForce);
+                _jumpsCount++;
+                anim.Jump();
+            }
+
+            _moveDirection.y += Physics.gravity.y * gravityScale * Time.deltaTime;
+
+            if (!_playerPhysics.enabled) return;
+            _playerPhysics.Move(_moveDirection * Time.deltaTime);
+            if (isMovingBox) {
+                anim.Push(horizontalInput + 0.002f);
+                anim.Move(.0f);
+            } else {
+                anim.Move(horizontalInput);
+                anim.Push(.000f);
+            }
+        }
+        else // To prevent moving during dialogs, etc.
         {
-            moveDirection = new Vector3(Input.GetAxis("Horizontal") * MoveSpeed, moveDirection.y);
-
-            if (playerPhysics.isGrounded)
-            {
-                jumpsCount = 0;
-            }
-
-            if (jumpingEnabled && Input.GetAxis("Vertical") > 0 && Input.GetButtonDown("Vertical"))
-            {
-                if (jumpsCount < 2)
-                {
-                    moveDirection = new Vector3(playerPhysics.velocity.x, JumpForce);
-                    jumpsCount++;
-                }
-            }
-
-            moveDirection.y += Physics.gravity.y * GravityScale * Time.deltaTime;
-
-            if (!playerPhysics.enabled) { return; }
-            playerPhysics.Move(moveDirection * Time.deltaTime);
+            anim.Push(.000f);
+            anim.Move(.0f);
         }
     }
 
@@ -65,12 +77,12 @@ public class Player : MonoBehaviour
         // TODO Freeze Controller when game ends
         //if (GameState.IsGameFinished()) return;
 
-        playerPhysics.enabled = false;
+        _playerPhysics.enabled = false;
         playerActive = false;
 
         var rb = gameObject.AddComponent<Rigidbody>();
 
-        if (moveDirection.x >= 0)
+        if (_moveDirection.x >= 0)
         {
             rb.AddForce(Vector3.right * 2, ForceMode.Impulse);
         }

@@ -6,9 +6,11 @@ TagManager:
   tags:
   - Lake
   - Cloud
-  - Icon
-  - LighteningBall
-  - Floating
+  - Box
+  - Wall
+  - Mirror
+  - Generator
+  - FixedMirror
   layers:
   - Default
   - TransparentFX

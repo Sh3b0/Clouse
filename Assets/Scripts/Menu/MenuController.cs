@@ -7,8 +7,10 @@ public class MenuController : MonoBehaviour {
     public GameObject LevelsButtons;
     public Animation[] OpeningAnimations;
     
+    // List of availible levels 
     private static readonly Dictionary<int, string> Levels = new Dictionary<int, string>() {
-        { 0, "Test" }
+        { 0, Constants.SN_TEST_LEVEL },
+        { 1, Constants.SN_LEVEL }
     };
 
     private void Start() {

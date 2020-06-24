@@ -1,32 +1,38 @@
 ﻿using System.Collections.ObjectModel;
 using UnityEngine;
+public class ArchimedesForce : MonoBehaviour
+{
+    public float force;
+    private Collection<Rigidbody> _rigidBodiesInWater;
 
-public class ArchimedesForce : MonoBehaviour {
-
-    public float Force;
-
-    private Collection<Rigidbody> _rigidbodiesInWater;
-
-    private void Start() {
-        _rigidbodiesInWater = new Collection<Rigidbody>();
+    private void Start()
+    {
+        _rigidBodiesInWater = new Collection<Rigidbody>();
     }
 
-    private void Update() {
-        foreach (var thisRigidbody in _rigidbodiesInWater) {
-            thisRigidbody.AddForce(0, Force, 0);
+    private void Update()
+    {
+        foreach (var thisRigidBody in _rigidBodiesInWater)
+        {
+            thisRigidBody.AddForce(0, force, 0);
         }
     }
 
-    private void OnTriggerEnter(Collider other) {
-        if (other.gameObject.CompareTag("Floating")) {
-            print("Box entered");
-            _rigidbodiesInWater.Add(other.gameObject.GetComponent<Rigidbody>());
-        }
+    private void OnTriggerEnter(Collider other)
+    {
+        if (!other.gameObject.CompareTag("Box")) return;
+        // print("Box entered");
+        _rigidBodiesInWater.Add(other.gameObject.GetComponent<Rigidbody>());
+        
+        // Can't move box while under water, disable it's holding trigger and detach it from player.
+        Box.LeaveBox(other.GetComponent<Box>());
+        other.gameObject.GetComponent<BoxCollider>().enabled = false;
     }
 
-    private void OnTriggerExit(Collider other) {
-        if (other.gameObject.CompareTag("Floating")) {
-            _rigidbodiesInWater.Remove(other.gameObject.GetComponent<Rigidbody>());
-        }
+    private void OnTriggerExit(Collider other)
+    {
+        if (!other.gameObject.CompareTag("Box")) return;
+        _rigidBodiesInWater.Remove(other.gameObject.GetComponent<Rigidbody>());
+        other.gameObject.GetComponent<BoxCollider>().enabled = true;
     }
 }
