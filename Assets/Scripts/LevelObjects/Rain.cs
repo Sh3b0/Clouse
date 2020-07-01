@@ -10,8 +10,8 @@ public class Rain : MonoBehaviour
         if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out var hit, Mathf.Infinity, layerMask)) 
         {
             // print("Rain hits the lake");
-            var waterRise = hit.collider.gameObject.GetComponent<WaterRise>();
-            waterRise.IncreaseWaterlevel();
+            var waterPart = hit.collider.gameObject.GetComponent<WaterPart>();
+            waterPart.ParentWater.IncreaseWaterlevel();
         }
         else 
         {

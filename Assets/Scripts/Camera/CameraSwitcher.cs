@@ -2,54 +2,29 @@
 
 public class CameraSwitcher : MonoBehaviour
 {
-    public Vector3 offset;
-    private bool _switched, _inTrigger;
-    private void Update(){
-        if (Player.playerActive)
+    public static bool snowHit;
+    private bool _inTrigger;
+
+    private void LateUpdate()
+    {
+        // if player is underground, don't fix Y.
+        CameraController.fixY = !_inTrigger;
+        if (snowHit && LevelsManager.CurrentLevel == 5)
         {
-            if (_inTrigger && !_switched)
-            {
-                _switched = true;
-                CameraController.me.transform.position += offset;   
-            }
-            else if (!_inTrigger && _switched)
-            {
-                _switched = false;
-                CameraController.me.transform.position -= offset;
-            }
+            GetComponent<BoxCollider>().isTrigger = false;
+            snowHit = false;
         }
-        else if (Player.cloudActive)
-        {
-            if (_inTrigger && _switched)
-            {
-                _switched = false;
-                CameraController.me.transform.position -= offset;   
-            }
-        }
-        
     }
-    private void OnTriggerEnter(Collider other)
+
+    private void OnTriggerStay(Collider other)
     {
         if (other.CompareTag("Player"))
-        {
             _inTrigger = true;
-            _switched = true;
-            CameraController.me.transform.position += offset;
-        }
     }
+
     private void OnTriggerExit(Collider other)
     {
         if (other.CompareTag("Player"))
-        {
             _inTrigger = false;
-            _switched = false;
-            CameraController.me.transform.position -= offset;
-        }
-    }
-    public static void ResetCamera()
-    {
-        Vector3 newPos = Camera.main.transform.position;
-        newPos.y = 0;
-        Camera.main.transform.position = newPos;
     }
 }

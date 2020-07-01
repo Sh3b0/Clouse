@@ -6,20 +6,19 @@ using UnityEngine.UI;
 public class MessageController : MonoBehaviour {
 
     public Text Message;
-    public Animation Disapperaing;
+    public Animation TextAnimation;
+
+    private static MessageController _instance;
 
     private void Start() {
-        // EventManager.StartListening(Constants.KEY_COLLECT_EVENT_NAME, OnKeyCollect);
-        // EventManager.StartListening(Constants.KEY_REQ_EVENT_NAME, OnExitWithoutKey);
+        _instance = this;
     }
 
-    private void OnExitWithoutKey() {
-        // Message.text = Constants.KEY_REUIRED;
-        Disapperaing.Play();
+    // For some other messages just add parameter to method
+    public static void ShowMessage() {
+        if (_instance) {
+            _instance.TextAnimation.Play();
+        }
     }
-
-    private void OnKeyCollect() {
-        // Message.text = Constants.KEY_ACQUIRED;
-        Disapperaing.Play();
-    }
+    
 }

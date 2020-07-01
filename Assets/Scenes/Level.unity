@@ -195,12 +195,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f9f53137fdd253945bde6a57f95a72db, type: 3}
---- !u!4 &70360767 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 5736659953460114978, guid: f9f53137fdd253945bde6a57f95a72db,
-    type: 3}
-  m_PrefabInstance: {fileID: 70360766}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &89490197
 GameObject:
   m_ObjectHideFlags: 0
@@ -770,7 +764,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 8c7ebe0b96cde7048a191179a39ac0d2, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 0.4
+  m_Volume: 0.2
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -1415,13 +1409,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af4978d04c4b21d489ab9b73ff42bd3a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PlayerInstance: {fileID: 794476758}
-  CloudInstance: {fileID: 70360767}
   Levels:
   - {fileID: 6966925330734567025, guid: c560338df3c28244b8acc28254c5649a, type: 3}
   - {fileID: 6966925330734567025, guid: 553feb505ee5b774691a1ce30d6e425c, type: 3}
   - {fileID: 6966925330734567025, guid: 264e203093abb4b4f9212e5222bf7c3b, type: 3}
   - {fileID: 6966925330734567025, guid: a9c6aed3da872c44cb466984354dd221, type: 3}
+  - {fileID: 6966925330734567025, guid: 8b2912d0560f6b54890cc0a980875132, type: 3}
+  - {fileID: 6966925330734567025, guid: fdb3b6171431cbc488b51d7ae7758c90, type: 3}
+  PlayerInstance: {fileID: 754630519}
+--- !u!114 &754630519 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8669729533931874432, guid: c54ea1ba4f92ad740b05ad5daa6ca9d6,
+    type: 3}
+  m_PrefabInstance: {fileID: 601360072}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 648b1b513e46a85478dac4d6505e3ccd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &754961180
 GameObject:
   m_ObjectHideFlags: 0
@@ -1649,12 +1656,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 783635993}
   m_CullTransparentMesh: 0
---- !u!4 &794476758 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 8669729533931874439, guid: c54ea1ba4f92ad740b05ad5daa6ca9d6,
-    type: 3}
-  m_PrefabInstance: {fileID: 601360072}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &808597144
 GameObject:
   m_ObjectHideFlags: 0
@@ -1786,18 +1787,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 814571789}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 817691922}
-        m_MethodName: OnNextLine
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &814571789
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1968,7 +1958,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -7.15, y: 3, z: -30}
+  m_LocalPosition: {x: -7.15, y: 4, z: -25}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -1986,8 +1976,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 10f3ad75a7456c1459f44e28f754d1fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 0}
-  anim: {fileID: 963194230}
 --- !u!111 &963194230
 Animation:
   m_ObjectHideFlags: 0
@@ -2602,18 +2590,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1230721338}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 817691922}
-        m_MethodName: OnFinish
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &1230721338
 MonoBehaviour:
   m_ObjectHideFlags: 0

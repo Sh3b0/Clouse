@@ -1,0 +1,12 @@
+fileFormatVersion: 2
+guid: 3d15987c46ae5dc46b789aaeab45c73b
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures:
+  - _NoTileNoiseTex: {fileID: 2800000, guid: af5515bfe14f1af4a9b8b3bf306b9261, type: 3}
+  - _Ramp: {fileID: 2800000, guid: ccad9b0732473ee4e95de81e50e9050f, type: 3}
+  nonModifiableTextures: []
+  userData: USER,FDISABLE_WRAPPED_LIGHTING,FSPEC_SHIN_MASK,FOUTLINE,FDIFFUSE_TINT_MASK,FSKETCH_GRADIENT,FSKETCH_ANIM,KSPEC_SHIN_MASK:mainTex,KSPEC_SHIN_MASK_CHANNEL:.a,KSHADER_TARGET:3.0,KDIFFUSE_TINT_MASK:mask3,KDIFFUSE_TINT_CHANNEL:.a,KUV_mask1:Main
+    Tex UV,chAB2B5557,cSM:30,cCF:TCP2_ShaderTemplate_Default
+  assetBundleName: 
+  assetBundleVariant: 

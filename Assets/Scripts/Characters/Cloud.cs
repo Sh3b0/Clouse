@@ -3,35 +3,42 @@ using UnityEngine;
 
 public class Cloud : MonoBehaviour
 {
+    public static Mode state = Mode.Idle;
+    public static Transform me;
+    
     public float moveSpeed;
-    public ParticleSystem rain;
+    public ParticleSystem rain, snow;
     public SkillBarController skillBar;
     public GameObject lightningPrefab;
+    public AudioSource rainSound, lightningSound, windSound;
     private Rigidbody _rigidBody;
-    public static Mode state = Mode.Idle;
-    public static Transform me; // TODO: find another way
 
     public enum Mode
     {
         Idle = 0,
         Rain = 1,
         Lightning = 2,
-        Ice = 3
+        Snow = 3
     }
 
     private void Start()
     {
+        rainSound = GetComponents<AudioSource>()[0];
+        lightningSound = GetComponents<AudioSource>()[1];
+        windSound = GetComponents<AudioSource>()[2];
+
         me = transform;
         _rigidBody = GetComponent<Rigidbody>();
     }
 
-    private void FixedUpdate() // Moving the cloud if active or not seen by camera
+    private void FixedUpdate() // Moving the cloud if active or at left/right of camera
     {
-        if (!CameraController.cloudVisible)
+        if (!CameraController.cloudVisible && CameraController.fixY && !CameraController.anim.isPlaying)
         {
             bool sign = transform.position.x < CameraController.me.transform.position.x;
             int dir = sign ? 1 : -1;
             _rigidBody.AddForce(dir * Vector3.right, ForceMode.Impulse);
+            if(!windSound.isPlaying) windSound.Play();
         }
 
         if (!Player.cloudActive) return;
@@ -44,19 +51,22 @@ public class Cloud : MonoBehaviour
     private void Update()
     {
         if (!Player.cloudActive) state = Mode.Idle;
-        
         if (state != Mode.Idle) skillBar.ActivateSkill((int) state - 1);
+        
         switch (state)
         {
-            case Mode.Idle:
+            case Mode.Idle: // Stop all ongoing effects
             {
                 skillBar.Initialize();
-                rain.Stop(); // Stop all ongoing effects
+                rain.Stop(); 
+                snow.Stop();
+                if (rainSound.isPlaying) rainSound.Stop();
+                if (windSound.isPlaying) windSound.Stop();
                 break;
             }
             case Mode.Rain:
             {
-                if (!rain.isPlaying) rain.Play(); // Play some rain sound/animation.
+                if (!rain.isPlaying) rain.Play();
                 break;
             }
             case Mode.Lightning:
@@ -64,37 +74,43 @@ public class Cloud : MonoBehaviour
                 StartCoroutine(skillBar.BlinkSkill(1));
                 break;
             }
-            case Mode.Ice:
+            case Mode.Snow:
             {
-                // TODO: Visualize Ice.
+                if (!snow.isPlaying) snow.Play();
                 break;
             }
         }
 
         if (!Player.cloudActive) return;
-        
+
         // 1 - Rain
         if (Input.GetButtonDown("Rain"))
         {
-            if (state == Mode.Idle) state = Mode.Rain;
+            if (state == Mode.Idle)
+            {
+                state = Mode.Rain;
+                //rainSound.PlayOneShot(rainSound.clip);
+                if(!rainSound.isPlaying) rainSound.Play();
+            }
             else if (state == Mode.Rain) state = Mode.Idle;
         }
 
         // 2 - Lightening
         else if (Input.GetButtonDown("Lightning") && state == Mode.Idle)
         {
-            state = Mode.Lightning; // Play some lightning sound/animation (One Shot)
+            lightningSound.PlayOneShot(lightningSound.clip);
+
+            state = Mode.Lightning;
             GameObject lightning = Instantiate(lightningPrefab);
             Lightning.StartObject = gameObject;
             Debug.DrawRay(transform.position, 30 * Vector3.down, Color.white, 1, false);
+
             if (Physics.Raycast(new Ray(transform.position, Vector3.down), out var hit))
             {
                 Lightning.EndPosition = hit.collider.transform.position;
-                if (hit.collider.CompareTag("Mirror") || hit.collider.CompareTag("FixedMirror")
-                ) // If lightning hit a mirror
+                if (hit.collider.CompareTag("Mirror") || hit.collider.CompareTag("FixedMirror"))
                 {
-                    print(hit.collider.gameObject);
-                    hit.collider.gameObject.GetComponent<Mirror>().Invoke("Work", 0.1f);
+                    hit.collider.gameObject.GetComponent<Mirror>().Invoke(nameof(Mirror.Work), 0.1f);
                 }
                 else if (hit.collider.CompareTag("Generator"))
                 {
@@ -112,8 +128,13 @@ public class Cloud : MonoBehaviour
         // 3 - Ice
         else if (Input.GetButtonDown("Ice"))
         {
-            if (state == Mode.Idle) state = Mode.Ice;
-            else if (state == Mode.Ice) state = Mode.Idle;
+            if (state == Mode.Idle)
+            {
+                state = Mode.Snow;
+                if(!windSound.isPlaying) windSound.Play();
+                //windSound.PlayOneShot(windSound.clip);
+            }
+            else if (state == Mode.Snow) state = Mode.Idle;
         }
     }
 }

@@ -1,93 +1,114 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Box : MonoBehaviour
 {
-    private Transform _oldParent;
     public GameObject keyIcon;
-    private readonly Queue<GameObject> _icons = new Queue<GameObject>();
-    private Rigidbody me;
-    private bool frozenL, frozenR;
-    
+    public float speed;
+    public AudioSource boxFallsDown;
+    public bool isMetal;
+
+    private bool stuckL, stuckR;
+    private GameObject player;
+    private Rigidbody playerRigidBody;
+    private BoxCollider playerCollider;
+    private CharacterController playerController;
+
     private void Start()
     {
-        me = GetComponent<Rigidbody>();
-        _oldParent = transform.parent;
+        player = Player.me;
+        playerRigidBody = player.GetComponent<Rigidbody>();
+        playerCollider = player.GetComponent<BoxCollider>();
+        playerController = player.GetComponent<CharacterController>();
+        keyIcon = GetComponentsInChildren(typeof(Transform), true)[1].gameObject;
     }
 
     private void Update()
     {
-        if (frozenL && Input.GetAxis("Horizontal") > 0)
+        if (Player.isMovingBox && CompareTag("Held"))
         {
-            UnFreeze();
-            frozenL = false;
-        }
-
-        if (frozenR && Input.GetAxis("Horizontal") < 0)
-        {
-            UnFreeze();
-            frozenR = false;
+            float inp = Input.GetAxis("Horizontal");
+            if (inp < 0 && !stuckL || inp > 0 && !stuckR)
+            {
+                transform.position += new Vector3(inp * speed * Time.deltaTime, 0.0f, 0.0f);
+                player.transform.position += new Vector3(inp * speed * Time.deltaTime, 0.0f, 0.0f);
+                stuckL = stuckR = false;
+            }
         }
     }
 
-    private void UnFreeze()
-    {
-        me.constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionX |
-                         RigidbodyConstraints.FreezePositionZ;
-        Player.playerActive = true;
-        CameraController.cameraActive = true;
-    }
-    
     private void OnTriggerEnter(Collider other)
     {
-        if (!other.CompareTag("Player")) return;
-        keyIcon.SetActive(true);
+        if (other.CompareTag("Player"))
+            keyIcon.SetActive(true);
     }
 
     private void OnTriggerStay(Collider other)
     {
-        if (!other.CompareTag("Player") || !Player.playerActive || !Player.isGrounded || frozenL || frozenR) return;
-
-        // Play animation of the player holding the box if not currently playing.
+        if (!other.CompareTag("Player") || Player.cloudActive) return;
         
-
-        if (Input.GetButton("Interact")) // If player currently holding the box
+        // if player is not facing box, then can't interact
+        if ((PlayerAnimation.dir && player.transform.position.x > transform.position.x ||
+                                     !PlayerAnimation.dir && player.transform.position.x < transform.position.x))
         {
             keyIcon.SetActive(false);
-            transform.parent = Player.me;
+            return;
+        }
+
+        if (Input.GetButton("Interact") && playerController.isGrounded) // If player currently holding the box
+        {
+            keyIcon.SetActive(false);
             Player.isMovingBox = true;
-            Player.jumpingEnabled = false;
+            Player.playerActive = false;
+            playerController.enabled = false;
+            playerCollider.enabled = true;
+            if (playerRigidBody == null)
+            {
+                playerRigidBody = player.AddComponent<Rigidbody>();
+                playerRigidBody.constraints = RigidbodyConstraints.FreezeRotation;
+            }
+
+            tag = "Held";
         }
         else // If player left the box, while staying in holding range.
         {
-            LeaveBox(this);
-            keyIcon.SetActive(true);
+            LeaveBox(true);
         }
     }
 
     private void OnTriggerExit(Collider other) // If player left the box and the holding range.
     {
-        if (!other.CompareTag("Player")) return;
-        LeaveBox(this);
+        if (other.CompareTag("Player"))
+            LeaveBox(false);
     }
-    public static void LeaveBox(Box box)
-    {
-        // Stop any box holding animation.
-        Player.isMovingBox = false;
-        box.keyIcon.SetActive(false);
-        box.transform.parent = box._oldParent;
-        Player.jumpingEnabled = true;
-    }
+
     private void OnCollisionEnter(Collision other)
     {
-        /* If a box (faller) falls on top of another box (fallee)
+        Vector3 boxPos = transform.position, colPos = other.collider.transform.position;
+        float x1 = boxPos.x, x2 = colPos.x, y1 = boxPos.y, y2 = colPos.y;
+
+        if (other.collider.CompareTag("Ground"))
+        {
+            boxFallsDown.Play();
+            return;
+        }
+
+        if (other.collider.CompareTag("Wall") || other.collider.CompareTag("Stand") ||
+            ((other.collider.CompareTag("Box") || other.collider.CompareTag("Held")) && Mathf.Abs(x1 - x2) >= 1))
+        {
+            if (x1 < x2) stuckR = true;
+            else stuckL = true;
+            return;
+        }
+
+        if (!other.collider.CompareTag("Box")) return;
+        LeaveBox(false);
+
+        /*
+         If a box (faller) falls on top of another box (fallee)
             disable the faller triggers
             make the fallee a parent of the faller
             make the base box icon points to the most recent added box.
         */
-
-        float y1 = transform.position.y, y2 = other.collider.transform.position.y;
-        if (!(other.collider.CompareTag("Box") && Mathf.Abs(y1 - y2) > 0.01f)) return;
 
         GameObject faller, fallee;
         if (y1 < y2)
@@ -103,50 +124,26 @@ public class Box : MonoBehaviour
 
         // Disable interacting with the faller.
         faller.GetComponent<BoxCollider>().enabled = false;
-
-        // Get icons and append them to a queue.
+        faller.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
         GameObject fallerIcon = faller.GetComponentsInChildren(typeof(Transform), true)[1].gameObject;
-        GameObject falleeIcon = fallee.GetComponentsInChildren(typeof(Transform), true)[1].gameObject;
-        _icons.Enqueue(falleeIcon);
-        _icons.Enqueue(fallerIcon);
+        fallerIcon.SetActive(false);
 
         // Fallee became parent of faller.
         faller.transform.parent = fallee.transform;
 
         // The base icon change place.
-        _icons.Peek().transform.position = fallerIcon.transform.position;
+        keyIcon = fallerIcon;
     }
 
-    private void OnCollisionStay(Collision other)
+    private void LeaveBox(bool iconState)
     {
-        Vector3 boxPos = transform.position;
-        if (other.collider.CompareTag("Wall"))
-        {
-            // print("Box colliding with a wall");
-            me.constraints = RigidbodyConstraints.FreezeAll;
-            transform.parent = _oldParent;
-            
-            Player.playerActive = false;
-            CameraController.cameraActive = false;
-            
-            if (other.collider.transform.position.x < boxPos.x) // LeftWall
-            {
-                frozenL = true;
-                boxPos.x += 0.1f;
-            }
-            else // RightWall
-            {
-                frozenR = true;
-                boxPos.x -= 0.1f;
-            }
-            transform.position = boxPos;
-        }
-        else if (other.collider.CompareTag("Player"))
-        {
-            Vector3 playerPos = Player.me.position;
-            if (playerPos.x > boxPos.x) playerPos.x = boxPos.x + 1.5f;
-            else playerPos.x = boxPos.x - 1.5f;
-            Player.me.position = playerPos;
-        }
+        if (!player) return;
+        if (!Player.playerActive && !Player.cloudActive) Player.playerActive = true;
+        Player.isMovingBox = false;
+        playerController.enabled = true;
+        playerCollider.enabled = false;
+        Destroy(playerRigidBody);
+        tag = "Box";
+        keyIcon.SetActive(iconState);
     }
 }

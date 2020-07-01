@@ -1,38 +1,38 @@
 ﻿using System.Collections.ObjectModel;
 using UnityEngine;
-public class ArchimedesForce : MonoBehaviour
-{
-    public float force;
-    private Collection<Rigidbody> _rigidBodiesInWater;
 
-    private void Start()
-    {
+public class ArchimedesForce : MonoBehaviour {
+
+    public WaterPart WaterLayer;
+    
+    private Collection<Rigidbody> _rigidBodiesInWater;
+    private float _layerHeight;
+    
+    private void Start() {
+        _layerHeight = gameObject.GetComponent<Transform>().position.y;
         _rigidBodiesInWater = new Collection<Rigidbody>();
     }
 
-    private void Update()
-    {
-        foreach (var thisRigidBody in _rigidBodiesInWater)
-        {
-            thisRigidBody.AddForce(0, force, 0);
+    private void Update() {
+        foreach (var thisRigidBody in _rigidBodiesInWater) {
+            thisRigidBody.AddForce(0, WaterLayer.ArchimedesForce, 0);
+            var rigidbodyHeight = thisRigidBody.GetComponent<Transform>().position.y;
+            
+            if (rigidbodyHeight > _layerHeight + WaterLayer.ParentWater.WaterLayerHeight * 6 ||
+                rigidbodyHeight < _layerHeight - WaterLayer.ParentWater.WaterLayerHeight * 6) {
+                _rigidBodiesInWater.Remove(thisRigidBody);
+                break;
+            }
         }
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
+    private void OnTriggerEnter(Collider other) {
         if (!other.gameObject.CompareTag("Box")) return;
-        // print("Box entered");
         _rigidBodiesInWater.Add(other.gameObject.GetComponent<Rigidbody>());
-        
-        // Can't move box while under water, disable it's holding trigger and detach it from player.
-        Box.LeaveBox(other.GetComponent<Box>());
-        other.gameObject.GetComponent<BoxCollider>().enabled = false;
     }
 
-    private void OnTriggerExit(Collider other)
-    {
+    private void OnTriggerExit(Collider other) {
         if (!other.gameObject.CompareTag("Box")) return;
-        _rigidBodiesInWater.Remove(other.gameObject.GetComponent<Rigidbody>());
         other.gameObject.GetComponent<BoxCollider>().enabled = true;
     }
 }

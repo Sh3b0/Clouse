@@ -11,7 +11,7 @@ public class Generator : MonoBehaviour
         if (Icon.color != Color.green) // Activate once.
         {
             Icon.color = Color.green;
-            if (ConnectedMechanism != null) ConnectedMechanism.Work();
+            if (ConnectedMechanism) ConnectedMechanism.Work();
         }
     }
 }

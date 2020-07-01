@@ -3,39 +3,26 @@ using UnityEngine.UI;
 
 public class DialogsManager : MonoBehaviour {
 
+    // Singleton
+    public static DialogsManager Instance { get; private set; }
+
     public Image Icon;
     public Text Text;
     public GameObject DialogLines;
     public Button Next, Finish;
     
-    private int _currentDialogIndex, _currentLineIndex;
+    private int _currentLineIndex;
     private Constants.DialogEntity[] _currentDialog;
     
     private void Start() {
-        _currentDialogIndex = 0;
-        EventManager.StartListening(Constants.EVENT_DIALOG, OnDialog);
+        // Initialization of manager on scene
+        Instance = this;
+        Next.onClick.AddListener(OnNextLine);
+        Finish.onClick.AddListener(OnFinish);
     }
 
-    public void OnNextLine() {
-        _currentLineIndex++;
-        
-        Icon.sprite = Resources.Load<Sprite>(_currentDialog[_currentLineIndex].IconPath);
-        Text.text = _currentDialog[_currentLineIndex].Text;
-
-        if (_currentLineIndex < _currentDialog.Length - 1) return;
-        Next.gameObject.SetActive(false);
-        Finish.gameObject.SetActive(true);
-    }
-
-    public void OnFinish() {
-        DialogLines.SetActive(false);
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
-        Player.playerActive = true;
-    }
-
-    private void OnDialog() {
-        _currentDialog = Constants.Dialogs[_currentDialogIndex];
+    public void OnDialog(int dialogIndex) {
+        _currentDialog = Constants.Dialogs[dialogIndex];
         
         Player.playerActive = false;
         DialogLines.SetActive(true);
@@ -48,7 +35,24 @@ public class DialogsManager : MonoBehaviour {
         Text.text = _currentDialog[0].Text;
 
         _currentLineIndex = 0;
-        _currentDialogIndex++;
+    }
+    
+    private void OnNextLine() {
+        _currentLineIndex++;
+        
+        Icon.sprite = Resources.Load<Sprite>(_currentDialog[_currentLineIndex].IconPath);
+        Text.text = _currentDialog[_currentLineIndex].Text;
+
+        if (_currentLineIndex < _currentDialog.Length - 1) return;
+        Next.gameObject.SetActive(false);
+        Finish.gameObject.SetActive(true);
+    }
+
+    private void OnFinish() {
+        DialogLines.SetActive(false);
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+        Player.playerActive = true;
     }
 
 }

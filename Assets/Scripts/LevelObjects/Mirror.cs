@@ -1,94 +1,76 @@
 ﻿using DigitalRuby.Lightning;
-using UnityEditor;
 using UnityEngine;
 
 public class Mirror : MonoBehaviour
 {
     public GameObject keyIcon;
     public GameObject lightningPrefab;
-    public float rotationSpeed;
-    private bool _inRange, _interacting;
-    [SerializeField] private float _reflectionAngle;
-
-    private void Start()
-    {
-        _reflectionAngle = transform.eulerAngles.z + 90;
-    }
-
+    public int mode;
+    public Animation anim;
+    public float[] reflectionAngles;
+    public bool dir;
+    
+    private bool _inRange;
+    
     private void Update()
     {
-        // If player in range and pressed 'Interact'
-        if (_inRange && Input.GetButtonUp("Interact"))
+        if (CompareTag("FlashLight") && Player.playerActive && _inRange && Input.GetButtonUp("Interact"))
         {
-            if (!_interacting && !Player.playerActive) return;
-            _interacting = !_interacting;
-            if (_interacting)
+            Work();
+            return;
+        }
+        // If player in range and pressed 'Interact'
+        if (Player.playerActive && _inRange && Input.GetButtonUp("Interact"))
+        {
+            if (dir)
             {
-                keyIcon.SetActive(false);
-                Player.playerActive = false;
-                Player.cloudActive = false;
-                CameraController.cameraActive = false;
+                mode++;
+                if (mode == 3)
+                    dir = false;
+                anim.Play(mode - 1 + "-" + mode);
             }
             else
             {
-                keyIcon.SetActive(true);
-                Player.playerActive = true;
-                Player.cloudActive = false;
-                CameraController.cameraActive = true;
+                mode--;
+                if (mode == 1)
+                    dir = true;
+                anim.Play(mode + 1 + "-" + mode);
             }
         }
-
-        if (!_interacting) return;
-
-        float angle = Input.GetAxis("Horizontal") > 0 ? -rotationSpeed : rotationSpeed;
-        if (Input.GetButton("Horizontal") &&
-            (_reflectionAngle < 170 && angle > 0 || _reflectionAngle > 10 && angle < 0))
-        {
-            transform.RotateAround(transform.position, Vector3.forward, angle);
-            _reflectionAngle += angle;
-        }
     }
-
-    public bool mirrorType; // True: left mirror, False: normal mirror
 
     public void Work()
     {
         GameObject lightning = Instantiate(lightningPrefab);
         Lightning.StartObject = gameObject;
 
-        if (mirrorType)
-            _reflectionAngle -= 180;
-        
-
         // Reflection Direction;
-        Vector3 reflectionDir = new Vector3(Mathf.Cos(_reflectionAngle * Mathf.Deg2Rad),
-            Mathf.Sin(_reflectionAngle * Mathf.Deg2Rad), 0);
+        Vector3 reflectionDir = new Vector3(Mathf.Cos(reflectionAngles[mode] * Mathf.Deg2Rad),
+            Mathf.Sin(reflectionAngles[mode] * Mathf.Deg2Rad), 0);
 
         bool ray = Physics.Raycast(new Ray(transform.position, reflectionDir), out var hit);
-        
-        
-        
+
         Destroy(lightning, 0.1f);
 
-        // Next target
-        if (ray && hit.collider.gameObject.CompareTag("Mirror"))
+        if (ray)
         {
-            Lightning.EndPosition = hit.collider.transform.position;
-            hit.collider.gameObject.GetComponent<Mirror>().Invoke("Work", 0.1f);
-        }
-        else if (ray && hit.collider.gameObject.CompareTag("Generator"))
-        {
-            Lightning.EndPosition = hit.collider.transform.position;
-            hit.collider.gameObject.GetComponent<Generator>().Work();
+            //print(hit.collider);
+            Vector3 colPos = hit.collider.transform.position;
+            Lightning.EndPosition = colPos;
+            if (hit.collider.gameObject.CompareTag("Mirror") || hit.collider.gameObject.CompareTag("FixedMirror"))
+                hit.collider.gameObject.GetComponent<Mirror>().Invoke("Work", 0.1f);
+            else if (hit.collider.gameObject.CompareTag("Generator"))
+                hit.collider.gameObject.GetComponent<Generator>().Work();
+            else
+            {
+                //Lightning.EndPosition = new Vector3(Mathf.Min(30 * reflectionDir.x, colPos.x), Mathf.Min(30 * reflectionDir.y, colPos.y)) +transform.position;
+                    Lightning.EndPosition = 30 * reflectionDir + transform.position;
+            }
         }
         else
-        {
             Lightning.EndPosition = 30 * reflectionDir + transform.position;
-        }
-        Debug.DrawLine(transform.position, Lightning.EndPosition, Color.green, 0.5f);
-        
-        if (mirrorType)
-            _reflectionAngle += 180;
+
+        Debug.DrawLine(transform.position, Lightning.EndPosition, Color.green, 1f, false);
     }
 
     private void OnTriggerEnter(Collider other)

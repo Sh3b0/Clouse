@@ -2,17 +2,16 @@
     
     // Scene Names
     public const string SN_MENU = "Menu";
-    public const string SN_TEST_LEVEL = "Test";
-    public const string SN_LEVEL = "Level";
-    
-    // Event Names
-    public const string EVENT_ENTER_REACHED = "EnterReached";
-    public const string EVENT_EXIT_REACHED = "ExitReached";
-    public const string EVENT_RESTART = "Restart";
-    public const string EVENT_DIALOG = "DialogEntered";
+    public const string SN_TEST_LEVEL = "Test-Ahmed";
+    public const string SN_LEVEL = "Level 1";
 
     // Objects Tags
     public const string TAG_PLAYER = "Player";
+    public const string TAG_DRAIN = "Drain";
+    public const string TAG_BOX = "Box";
+    public const string TAG_HELD = "Held";
+    public const string TAG_GENERATOR = "Generator";
+    public const string TAG_MIRROR = "Mirror";
     
     // Dialogs
     public struct DialogEntity {

@@ -13,11 +13,11 @@ public class SkillBarController : MonoBehaviour {
     }
 
     public void ActivateSkill(int skillIndex) {
-        SkillsIcons[skillIndex].color = new Color32(255, 255, 255, 255);
+        SkillsIcons[skillIndex].color = new Color32(47, 196, 237, 255);
     }
 
     private void DeactivateSkill(int skillIndex) {
-        SkillsIcons[skillIndex].color = new Color32(255, 255, 255, 90);
+        SkillsIcons[skillIndex].color = new Color32(47, 196, 237, 90);
     }
 
     public IEnumerator BlinkSkill(int skillIndex)

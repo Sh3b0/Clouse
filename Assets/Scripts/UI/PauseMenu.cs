@@ -27,7 +27,7 @@ public class PauseMenu : MonoBehaviour {
     
     public void OnRestart() {
         OnResume();
-        EventManager.TriggerEvent(Constants.EVENT_RESTART);
+        CheckpointsManager.LoadCheckpoint();
     }
 
     public void OnExitToMenu() {

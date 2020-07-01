@@ -11,6 +11,11 @@ TagManager:
   - Mirror
   - Generator
   - FixedMirror
+  - Ground
+  - Drain
+  - Held
+  - Stand
+  - FlashLight
   layers:
   - Default
   - TransparentFX
@@ -20,8 +25,8 @@ TagManager:
   - UI
   - 
   - 
-  - 
-  - 
+  - Floating
+  - Player
   - 
   - 
   - 

@@ -3,7 +3,12 @@ guid: 5fdb0eb563ea23f41acdfd92ef03fbc1
 ModelImporter:
   serializedVersion: 19301
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: sloud cheeks
+    second: {fileID: 2100000, guid: 2fbb60dab8927b644b371080d624dd19, type: 2}
   materials:
     materialImportMode: 1
     materialName: 0
