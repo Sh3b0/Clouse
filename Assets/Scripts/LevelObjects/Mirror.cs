@@ -1,4 +1,5 @@
-﻿using DigitalRuby.Lightning;
+﻿using System;
+using DigitalRuby.Lightning;
 using UnityEngine;
 
 public class Mirror : MonoBehaviour
@@ -9,18 +10,19 @@ public class Mirror : MonoBehaviour
     public Animation anim;
     public float[] reflectionAngles;
     public bool dir;
-    
-    private bool _inRange;
-    
+
+    private void Start()
+    {
+        if (CompareTag("Enemy"))
+        {
+            Invoke(nameof(Work), 0.1f);
+        }
+    }
+
     private void Update()
     {
-        if (CompareTag("FlashLight") && Player.playerActive && _inRange && Input.GetButtonUp("Interact"))
-        {
-            Work();
-            return;
-        }
         // If player in range and pressed 'Interact'
-        if (Player.playerActive && _inRange && Input.GetButtonUp("Interact"))
+        if (Player.playerActive && keyIcon.activeSelf && Input.GetButtonUp("Interact"))
         {
             if (dir)
             {
@@ -57,14 +59,14 @@ public class Mirror : MonoBehaviour
             //print(hit.collider);
             Vector3 colPos = hit.collider.transform.position;
             Lightning.EndPosition = colPos;
-            if (hit.collider.gameObject.CompareTag("Mirror") || hit.collider.gameObject.CompareTag("FixedMirror"))
-                hit.collider.gameObject.GetComponent<Mirror>().Invoke("Work", 0.1f);
+            if (hit.collider.gameObject.CompareTag("Mirror") || hit.collider.gameObject.CompareTag("FixedMirror") || hit.collider.gameObject.CompareTag("Enemy"))
+                hit.collider.gameObject.GetComponent<Mirror>().Invoke(nameof(Work), 0.1f);
             else if (hit.collider.gameObject.CompareTag("Generator"))
                 hit.collider.gameObject.GetComponent<Generator>().Work();
             else
             {
                 //Lightning.EndPosition = new Vector3(Mathf.Min(30 * reflectionDir.x, colPos.x), Mathf.Min(30 * reflectionDir.y, colPos.y)) +transform.position;
-                    Lightning.EndPosition = 30 * reflectionDir + transform.position;
+                Lightning.EndPosition = 30 * reflectionDir + transform.position;
             }
         }
         else
@@ -75,15 +77,13 @@ public class Mirror : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (!other.CompareTag("Player") || CompareTag("FixedMirror")) return;
-        _inRange = true;
-        keyIcon.SetActive(true);
+        if (other.CompareTag("Player") && !CompareTag("FixedMirror"))
+            keyIcon.SetActive(true);
     }
 
     private void OnTriggerExit(Collider other)
     {
-        if (!other.CompareTag("Player") || CompareTag("FixedMirror")) return;
-        _inRange = false;
-        keyIcon.SetActive(false);
+        if (other.CompareTag("Player") && !CompareTag("FixedMirror"))
+            keyIcon.SetActive(false);
     }
 }

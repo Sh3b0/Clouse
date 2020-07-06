@@ -133,12 +133,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9bdfd73c2fd3cad4497ce413a730915e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  WaterSides:
+  - {fileID: 4694457434453111083}
+  - {fileID: 1109835944302701873}
+  - {fileID: 7818574611735670630}
+  - {fileID: 6122223593466157095}
   LeftUpRaycast: {fileID: 2764569955892601359}
   LeftDownRaycast: {fileID: 4176652208951818269}
   RightUpRaycast: {fileID: 269696885910499169}
   RightDownRaycast: {fileID: 7107469257231470731}
   ArchimedesForce: 0
   ParentWater: {fileID: 0}
+  ArchimedesScript: {fileID: 8532072156215866068}
+  IsTopLayer: 0
 --- !u!114 &8532072156215866068
 MonoBehaviour:
   m_ObjectHideFlags: 0

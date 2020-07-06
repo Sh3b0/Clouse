@@ -1,0 +1,221 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: cape_dark 1_fast_windy
+  m_Shader: {fileID: 4800000, guid: 3f17d46eadd0bb049ac072eb8db526a6, type: 3}
+  m_ShaderKeywords: TCP2_DISABLE_WRAPPED_LIGHT
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: 2000
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _BlendTex1:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _BlendTex2:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _BumpMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailAlbedoMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailMask:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailNormalMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DissolveMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DissolveRamp:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _EmissionMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _FoamTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MainTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MetallicGlossMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _NormalMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _OcclusionMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ParallaxMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Ramp:
+        m_Texture: {fileID: 2800000, guid: abc83c21d57d4a74cabe12065fa1a8b2, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ScanlinesTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SketchTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ThresholdTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+    - _BottomColorPos: 1
+    - _BumpScale: 1
+    - _Cutoff: 0.5
+    - _DepthAlpha: 0.5
+    - _DepthMinAlpha: 0.5
+    - _DetailNormalMapScale: 1
+    - _DissolveGradientWidth: 0.2
+    - _DissolveValue: 0.859
+    - _DstBlend: 0
+    - _DstBlendOutline: 10
+    - _DstBlendTCP2: 10
+    - _EnableConstSizeOutline: 0
+    - _EnableTexturedOutline: 0
+    - _EnableZSmooth: 0
+    - _Float1: 0
+    - _Float3: 0
+    - _FoamSmooth: 0.02
+    - _FoamSpread: 2
+    - _FoamStrength: 0.8
+    - _GlossMapScale: 1
+    - _Glossiness: 0
+    - _GlossyReflections: 1
+    - _HSV_H: 0
+    - _HSV_S: 0
+    - _HSV_V: 0
+    - _Metallic: 0
+    - _Mode: 0
+    - _NDVMaxFrag: 1
+    - _NDVMinFrag: 0.5
+    - _OcclusionStrength: 1
+    - _Offset1: 0
+    - _Offset2: 0
+    - _Outline: 0.05
+    - _OutlineWidth: 1
+    - _Parallax: 0.02
+    - _RampSmooth: 0.001
+    - _RampSmoothAdd: 0.75
+    - _RampSmoothDir: 0.5
+    - _RampSmoothPoint: 0.5
+    - _RampSmoothSpot: 0.5
+    - _RampSmoothing: 0.001
+    - _RampThreshold: 0.77
+    - _RampThresholdDir: 0.5
+    - _RampThresholdPoint: 0.5
+    - _RampThresholdSpot: 0.5
+    - _ReflRoughness: 0
+    - _ReflStrength: 1
+    - _RimMax: 0.85
+    - _RimMin: 0.6
+    - _RimStrength: 0.5
+    - _Shadow_HSV_H: 0
+    - _Shadow_HSV_S: 0
+    - _Shadow_HSV_V: 0
+    - _Shininess: 0.1
+    - _SketchHalftoneMax: 1
+    - _SketchHalftoneMin: 0.862
+    - _SketchSpeed: 6
+    - _Smoothness: 0.2
+    - _SmoothnessTextureChannel: 0
+    - _SnowThickness: 0.02
+    - _SnowThr: 0.5
+    - _SpecBlend: 1
+    - _SpecSmooth: 0
+    - _SpecularHighlights: 1
+    - _SrcBlend: 1
+    - _SrcBlendOutline: 5
+    - _SrcBlendTCP2: 5
+    - _StencilRef: 1
+    - _TCP2_DISABLE_WRAPPED_LIGHT: 1
+    - _TCP2_RAMPTEXT: 0
+    - _TCP2_SPEC_TOON: 0
+    - _TCP2_STYLIZED_FRESNEL: 0
+    - _TexLod: 3.64
+    - _ThresholdScale: 4
+    - _ThresholdStrength: 1
+    - _TopColorPos: 8
+    - _UVSec: 0
+    - _WaveFrequency: 1
+    - _WaveHeight: 0.1
+    - _WaveSpeed: 2
+    - _WindAmplitude: 2
+    - _WindFrequency: 5
+    - _WindSpeed: 7.1
+    - _WindStrength: 0.1
+    - _WindTimeOffset: 1
+    - _ZSmooth: -0.5
+    - _ZWrite: 1
+    - __BeginGroup_OtherLights: 0
+    - __EndGroup: 0
+    - __dirty: 0
+    - __dummy__: 0
+    - __outline_gui_dummy__: 0
+    m_Colors:
+    - _BottomColor: {r: 0, g: 0.53676474, b: 0.07033476, a: 1}
+    - _BumpSpeed: {r: 0.2, g: 0.2, b: 0.3, a: 0.3}
+    - _Color: {r: 0.2, g: 0.22745098, b: 0.36862746, a: 1}
+    - _ColorBack: {r: 0.17181383, g: 0.21831617, b: 0.31132078, a: 1}
+    - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _FoamColor: {r: 0.9, g: 0.9, b: 0.9, a: 1}
+    - _FoamSpeed: {r: 2, g: 2, b: 2, a: 2}
+    - _HColor: {r: 1, g: 1, b: 1, a: 1}
+    - _HologramColor: {r: 0, g: 0.502, b: 1, a: 1}
+    - _OutlineColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
+    - _RimColor: {r: 0.8, g: 0.8, b: 0.8, a: 0.6}
+    - _SColor: {r: 0.509434, g: 0.509434, b: 0.509434, a: 1}
+    - _ScanlinesTex_SC: {r: 1, g: 1, b: 0, a: 0}
+    - _SketchColor: {r: 0, g: 0, b: 0, a: 1}
+    - _SnowAngle: {r: 0, g: 1, b: 0, a: 0}
+    - _SnowColor: {r: 0.94, g: 0.96, b: 1, a: 1}
+    - _SnowRimColor: {r: 1, g: 1, b: 1, a: 0.7}
+    - _SnowShadowColor: {r: 0.19999996, g: 0.19999996, b: 0.29999998, a: 1}
+    - _SpecColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+    - _TopColor: {r: 0.31417936, g: 0.7205882, b: 0.28081742, a: 1}
+    - _VColorBlendOffset: {r: 0, g: 0, b: 0, a: 0}
+    - _VColorBlendSmooth: {r: 0.25, g: 0.25, b: 0.25, a: 0.25}
+    - _Vector1: {r: 0, g: 0, b: 0, a: 0}
+    - _WindCycles: {r: 0, g: 0, b: 0.5, a: 0}
+    - _WindDirection: {r: 2, g: 7, b: 2, a: 0}
+    - _WindMagnitude: {r: 0, g: 0, b: 0.1, a: 0}

@@ -52,12 +52,19 @@ MonoBehaviour:
   OneSideIncrease: 0.8
   OneSideShift: 1.6
   DecreaseMultiplier: 4
-  BaseArchimedesForce: 3
-  ForceMultiplier: 1.05
+  BaseArchimedesForce: 300
+  ForceMultiplier: 1
+  TimeOfIceMelt: 20
   WaterLayerExample: {fileID: 5812206808299057056, guid: 89a953560243c4b4f91bd2244185613b,
     type: 3}
-  WaterDropsForIncrease: 30
+  IceLayerExample: {fileID: 8827410974851293708, guid: e1b9cbc63f33025469b37d8a269890b3,
+    type: 3}
+  WaterDropsForIncrease: 15
+  IterationsForDecrease: 10
+  TopLayerPassesBeforeBlock: 6
   WaterLayersSpawnOrigin: {fileID: 5112355034036378839}
+  DarkestLayerColor: {r: 0.048282295, g: 0.22521742, b: 0.2924528, a: 0.8235294}
+  BrightestLayerColor: {r: 0.30838376, g: 0.6603774, b: 0.6231473, a: 0.15686275}
 --- !u!1 &5344319187940784517
 GameObject:
   m_ObjectHideFlags: 0

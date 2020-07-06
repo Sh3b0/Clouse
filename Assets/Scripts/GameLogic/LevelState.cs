@@ -28,8 +28,8 @@ public class LevelState {
     }
     
     public SavedBox[] Boxes;
+    public WaterRise.SerializedWaterLayer[] LayersOfWaterObject;
     public Dictionary<Vector3, SavedMirror> MirrorsByPos;
     public Dictionary<Vector3, bool> GeneratorsActivatedByPos;
-    // TODO Add support for water
 
 }

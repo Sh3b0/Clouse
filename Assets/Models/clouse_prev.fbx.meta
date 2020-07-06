@@ -7,7 +7,28 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: cloud.001
+    second: {fileID: 2100000, guid: ad2c5119111b216469a9e8607890ca98, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: cloud.005
+    second: {fileID: 2100000, guid: ad2c5119111b216469a9e8607890ca98, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: cloud_eyes.003
+    second: {fileID: 3134002019315326630, guid: 31a3269ba19774343adc77a8d651fcb6,
+      type: 3}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: sloud cheeks
+    second: {fileID: 2100000, guid: 2fbb60dab8927b644b371080d624dd19, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: sloud cheeks.003
     second: {fileID: 2100000, guid: 2fbb60dab8927b644b371080d624dd19, type: 2}
   materials:
     materialImportMode: 1

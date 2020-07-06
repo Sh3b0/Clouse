@@ -2,11 +2,14 @@
 
 public class WaterPart : MonoBehaviour {
 
+    public SpriteRenderer[] WaterSides;
     public Transform LeftUpRaycast, LeftDownRaycast;
     public Transform RightUpRaycast, RightDownRaycast;
     public float ArchimedesForce;
     public WaterRise ParentWater;
-    
+    public ArchimedesForce ArchimedesScript;
+    public bool IsTopLayer;
+
     private Transform _thisObject;
 
     private void Start() {
@@ -76,6 +79,16 @@ public class WaterPart : MonoBehaviour {
     private void DecreaseAtRight() {
         _thisObject.localScale -= new Vector3(ParentWater.OneSideIncrease, 0, 0) * (ParentWater.DecreaseMultiplier * Time.deltaTime);
         _thisObject.localPosition -= new Vector3(ParentWater.OneSideShift, 0, 0) * (ParentWater.DecreaseMultiplier * Time.deltaTime);
+    }
+
+    public void DisableTopLayer() {
+        ArchimedesScript.DisableBlocks();
+    }
+
+    public void SetColor(Color newColor) {
+        foreach (var waterSide in WaterSides) {
+            waterSide.color = newColor;
+        }
     }
     
 }

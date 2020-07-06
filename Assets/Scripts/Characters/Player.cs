@@ -14,6 +14,7 @@ public class Player : MonoBehaviour
     private AudioSource walking, effects;
     private Vector3 _moveDirection;
     private int _jumpsCount;
+    private bool _isGrounded;
 
     private void Start()
     {
@@ -25,30 +26,24 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
-        // TODO Freeze Controller when game ends
-        //if (GameState.IsGameFinished()) return;
-
         // Switch between player and cloud with Tab key
         if ((playerActive || cloudActive) && Input.GetButtonUp("Switch"))
         {
+            if (LevelsManager.CurrentLevel == 1) return;
             if (playerActive)
             {
                 playerActive = false;
                 cloudActive = true;
+                skillBar.Initialize();
+                walking.Pause();
             }
             else
             {
                 playerActive = true;
                 cloudActive = false;
             }
-
+            
             skillBar.gameObject.SetActive(cloudActive);
-            if (cloudActive)
-            {
-                skillBar.Initialize();
-                walking.Pause();
-            }
-
             anim.Push(.000f);
             anim.Move(.0f);
         }
@@ -65,25 +60,26 @@ public class Player : MonoBehaviour
         {
             _moveDirection = new Vector3(horizontalInput * MoveSpeed, _moveDirection.y);
 
-            if (playerController.isGrounded && _jumpsCount > 0)
+            // If the player is now grounded, but wasn't in last frame
+            if (playerController.isGrounded && (_jumpsCount > 0 || !_isGrounded))
             {
                 effects.PlayOneShot(landing);
-                _jumpsCount = 0;
+                _isGrounded = true;
             }
-
+            
+            if (!playerController.isGrounded)
+            {
+                _moveDirection.y += Physics.gravity.y * Time.deltaTime;
+                _isGrounded = false;
+            }
+            else _jumpsCount = 0;
+            
             if (_jumpsCount < 2 && Input.GetButtonDown("Jump"))
             {
                 effects.PlayOneShot(jumping);
                 _jumpsCount++;
                 _moveDirection = new Vector3(playerController.velocity.x, JumpForce);
                 anim.Jump();
-            }
-
-            if (!playerController.isGrounded) _moveDirection.y += Physics.gravity.y * Time.deltaTime;
-
-            if (playerController.enabled)
-            {
-                playerController.Move(_moveDirection * Time.deltaTime);
             }
 
             if (isMovingBox)
@@ -98,14 +94,19 @@ public class Player : MonoBehaviour
                 anim.Push(.000f);
             }
         }
-        else // To prevent moving during dialogs, etc.
+        else
         {
             if (isMovingBox)
             {
-                // Pushing animation should be played even if player stands (with minimum speed)
                 anim.Push(horizontalInput + 0.002f);
                 anim.Move(.0f);
             }
+        }
+        
+        if (playerController.enabled)
+        {
+            if(!playerActive)_moveDirection.x = 0;
+            playerController.Move(_moveDirection * Time.deltaTime);
         }
     }
 
@@ -116,20 +117,5 @@ public class Player : MonoBehaviour
         transform.position = point.position;
         playerController.enabled = true;
     }
-
-    public void Die()
-    {
-        // TODO Freeze Controller when game ends
-        //if (GameState.IsGameFinished()) return;
-
-        playerController.enabled = false;
-        playerActive = false;
-
-        // Drop the dead player's body
-        var rb = gameObject.AddComponent<Rigidbody>();
-        if (_moveDirection.x >= 0)
-            rb.AddForce(Vector3.right * 2, ForceMode.Impulse);
-        else
-            rb.AddForce(Vector3.left * 2, ForceMode.Impulse);
-    }
+    
 }

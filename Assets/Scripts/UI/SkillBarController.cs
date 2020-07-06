@@ -19,13 +19,4 @@ public class SkillBarController : MonoBehaviour {
     private void DeactivateSkill(int skillIndex) {
         SkillsIcons[skillIndex].color = new Color32(47, 196, 237, 90);
     }
-
-    public IEnumerator BlinkSkill(int skillIndex)
-    {
-        ActivateSkill(skillIndex);
-        yield return new WaitForSeconds(0.1f);
-        DeactivateSkill(skillIndex);
-        Cloud.state = Cloud.Mode.Idle;
-    }
-    
 }

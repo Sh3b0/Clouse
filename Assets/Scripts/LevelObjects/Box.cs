@@ -44,6 +44,7 @@ public class Box : MonoBehaviour
 
     private void OnTriggerStay(Collider other)
     {
+        if (!player) return;
         if (!other.CompareTag("Player") || Player.cloudActive) return;
         
         // if player is not facing box, then can't interact

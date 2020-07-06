@@ -28,11 +28,11 @@ public class CameraController : MonoBehaviour {
         
         // Follow active character
         if (Player.playerActive) _target = Player.me.transform;
-        else if (Player.cloudActive) _target = Cloud.me;
+        else if (Player.cloudActive) _target = Cloud.me.transform;
         else _target = Player.me.transform;
         
         // Detect cloud visibility (Used in cloud script)
-        Vector3 pos = me.WorldToViewportPoint(Cloud.me.position);
+        Vector3 pos = me.WorldToViewportPoint(Cloud.me.transform.position);
         cloudVisible = pos.x >= 0 && pos.x <= 1 && pos.y >= 0 && pos.y <= 1 && pos.z > 0;
 
         // Peek animation

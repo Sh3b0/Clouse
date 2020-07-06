@@ -8,7 +8,7 @@ public class ExitController : MonoBehaviour {
     private void OnTriggerEnter(Collider other) {
         if (!other.CompareTag(Constants.TAG_PLAYER)) return;
         if (LevelsManager.CurrentLevelIsLast()) {
-            print("That is the last level");
+            EndScreen.Instance.OnEnd();
             return;
         }
         LevelsManager.OnExitReached();

@@ -6,9 +6,9 @@ public class CheckpointTrigger : MonoBehaviour {
     public Animation FlagAnimation;
     
     private void Start() {
-        if (CheckpointsManager.CheckpointsVisited.Contains(GameLevel.CurrentLevelInstance.LevelIndex)) {
-            Destroy(gameObject);
-        }
+        if (!CheckpointsManager.CheckpointsVisited.Contains(GameLevel.CurrentLevelInstance.LevelIndex)) return;
+        TriggerCollider.enabled = false;
+        FlagAnimation.Play(Constants.ANIM_FAST_FLAG);
     }
 
     private void OnTriggerEnter(Collider other) {

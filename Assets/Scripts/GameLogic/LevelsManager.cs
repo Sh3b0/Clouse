@@ -5,6 +5,7 @@ public static class LevelsManager {
 
     public static int CurrentLevel;
     public static bool EnteredFromLeft = true;
+    public static bool LoadedByCheckpoint = false;
 
     private static readonly Dictionary<int, string> LevelIndexToScene = new Dictionary<int, string>() {
         {0, "Menu"},

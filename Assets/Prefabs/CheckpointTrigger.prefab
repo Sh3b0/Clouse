@@ -104,6 +104,7 @@ Animation:
   m_Animation: {fileID: 7400000, guid: c8f4d572b87d4b546b2db97a85cacf7a, type: 2}
   m_Animations:
   - {fileID: 7400000, guid: c8f4d572b87d4b546b2db97a85cacf7a, type: 2}
+  - {fileID: 7400000, guid: 0486ec2ea8566034986fa2ddf0a4c1ff, type: 2}
   m_WrapMode: 0
   m_PlayAutomatically: 0
   m_AnimatePhysics: 0
@@ -190,6 +191,16 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 60
       objectReference: {fileID: 0}
+    - target: {fileID: 6700756185858546220, guid: ef26535f054d7024e869b809c814812f,
+        type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: 197c457285b11fc47960fc66c2178e74, type: 2}
+    - target: {fileID: 6700756185858546220, guid: ef26535f054d7024e869b809c814812f,
+        type: 3}
+      propertyPath: m_Materials.Array.data[2]
+      value: 
+      objectReference: {fileID: 2100000, guid: 4c917eeb6297b034fbb0c894a1df08a7, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ef26535f054d7024e869b809c814812f, type: 3}
 --- !u!4 &3068312574870082261 stripped

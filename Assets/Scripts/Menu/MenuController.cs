@@ -10,7 +10,7 @@ public class MenuController : MonoBehaviour {
     // List of availible levels 
     private static readonly Dictionary<int, string> Levels = new Dictionary<int, string>() {
         { 0, Constants.SN_TEST_LEVEL },
-        { 1, Constants.SN_LEVEL }
+        { 1, Constants.SN_INTRO }
     };
 
     private void Start() {

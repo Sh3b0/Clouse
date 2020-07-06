@@ -3,17 +3,19 @@ using UnityEngine;
 
 public class Cloud : MonoBehaviour
 {
-    public static Mode state = Mode.Idle;
-    public static Transform me;
-    
-    public float moveSpeed;
-    public ParticleSystem rain, snow;
-    public SkillBarController skillBar;
-    public GameObject lightningPrefab;
-    public AudioSource rainSound, lightningSound, windSound;
-    private Rigidbody _rigidBody;
+    public static GameObject me;
 
-    public enum Mode
+    public ParticleSystem rain, snow;
+    public GameObject lightningPrefab;
+    public SkillBarController skillBar;
+    public AudioSource rainSound, lightningSound, snowSound;
+    public GameObject idleFace, sadFace, angryFace, coldFace;
+
+    private const float MoveSpeed = 15;
+    private Rigidbody _rigidBody;
+    private Mode state = Mode.Idle;
+
+    private enum Mode
     {
         Idle = 0,
         Rain = 1,
@@ -25,10 +27,9 @@ public class Cloud : MonoBehaviour
     {
         rainSound = GetComponents<AudioSource>()[0];
         lightningSound = GetComponents<AudioSource>()[1];
-        windSound = GetComponents<AudioSource>()[2];
-
-        me = transform;
+        snowSound = GetComponents<AudioSource>()[2];
         _rigidBody = GetComponent<Rigidbody>();
+        me = gameObject;
     }
 
     private void FixedUpdate() // Moving the cloud if active or at left/right of camera
@@ -38,50 +39,35 @@ public class Cloud : MonoBehaviour
             bool sign = transform.position.x < CameraController.me.transform.position.x;
             int dir = sign ? 1 : -1;
             _rigidBody.AddForce(dir * Vector3.right, ForceMode.Impulse);
-            if(!windSound.isPlaying) windSound.Play();
         }
+    }
 
-        if (!Player.cloudActive) return;
-
-        Vector3 newPosition = transform.position;
-        newPosition.x += Input.GetAxis("Horizontal") * moveSpeed;
-        transform.position = newPosition;
+    private void GoIdle()
+    {
+        state = Mode.Idle;
+        skillBar.Initialize();
+        idleFace.SetActive(true);
+        sadFace.SetActive(false);
+        angryFace.SetActive(false);
+        coldFace.SetActive(false);
+        rain.Stop();
+        rainSound.Stop();
+        snow.Stop();
+        snowSound.Stop();
     }
 
     private void Update()
     {
-        if (!Player.cloudActive) state = Mode.Idle;
-        if (state != Mode.Idle) skillBar.ActivateSkill((int) state - 1);
-        
-        switch (state)
+        if (!Player.cloudActive)
         {
-            case Mode.Idle: // Stop all ongoing effects
-            {
-                skillBar.Initialize();
-                rain.Stop(); 
-                snow.Stop();
-                if (rainSound.isPlaying) rainSound.Stop();
-                if (windSound.isPlaying) windSound.Stop();
-                break;
-            }
-            case Mode.Rain:
-            {
-                if (!rain.isPlaying) rain.Play();
-                break;
-            }
-            case Mode.Lightning:
-            {
-                StartCoroutine(skillBar.BlinkSkill(1));
-                break;
-            }
-            case Mode.Snow:
-            {
-                if (!snow.isPlaying) snow.Play();
-                break;
-            }
+            GoIdle();
+            return;
         }
 
-        if (!Player.cloudActive) return;
+        transform.position += new Vector3(Input.GetAxis("Horizontal") * MoveSpeed * Time.deltaTime, 0.0f, 0.0f);
+
+        if (state != Mode.Idle) skillBar.ActivateSkill((int) state - 1);
+        else GoIdle();
 
         // 1 - Rain
         if (Input.GetButtonDown("Rain"))
@@ -89,21 +75,26 @@ public class Cloud : MonoBehaviour
             if (state == Mode.Idle)
             {
                 state = Mode.Rain;
-                //rainSound.PlayOneShot(rainSound.clip);
-                if(!rainSound.isPlaying) rainSound.Play();
+                rain.Play();
+                rainSound.Play();
+                idleFace.SetActive(false);
+                sadFace.SetActive(true);
             }
-            else if (state == Mode.Rain) state = Mode.Idle;
+            else if (state == Mode.Rain) GoIdle();
         }
 
         // 2 - Lightening
         else if (Input.GetButtonDown("Lightning") && state == Mode.Idle)
         {
+            if (LevelsManager.CurrentLevel < 3) return;
+            idleFace.SetActive(false);
+            angryFace.SetActive(true);
+            state = Mode.Lightning;
+            Invoke(nameof(GoIdle), 0.5f);
             lightningSound.PlayOneShot(lightningSound.clip);
 
-            state = Mode.Lightning;
             GameObject lightning = Instantiate(lightningPrefab);
             Lightning.StartObject = gameObject;
-            Debug.DrawRay(transform.position, 30 * Vector3.down, Color.white, 1, false);
 
             if (Physics.Raycast(new Ray(transform.position, Vector3.down), out var hit))
             {
@@ -116,10 +107,14 @@ public class Cloud : MonoBehaviour
                 {
                     hit.collider.gameObject.GetComponent<Generator>().Work();
                 }
+                else if (hit.collider.CompareTag("FlashLight"))
+                {
+                    hit.collider.gameObject.GetComponent<FlashLight>().flash.SetActive(true);
+                }
             }
             else // Lightning hit nothing
             {
-                Lightning.EndPosition = -10 * Vector3.down;
+                Lightning.EndPosition = -50 * Vector3.down;
             }
 
             Destroy(lightning, 0.1f);
@@ -128,13 +123,16 @@ public class Cloud : MonoBehaviour
         // 3 - Ice
         else if (Input.GetButtonDown("Ice"))
         {
+            if (LevelsManager.CurrentLevel < 5) return;
             if (state == Mode.Idle)
             {
                 state = Mode.Snow;
-                if(!windSound.isPlaying) windSound.Play();
-                //windSound.PlayOneShot(windSound.clip);
+                snow.Play();
+                snowSound.Play();
+                idleFace.SetActive(false);
+                coldFace.SetActive(true);
             }
-            else if (state == Mode.Snow) state = Mode.Idle;
+            else if (state == Mode.Snow) GoIdle();
         }
     }
 }

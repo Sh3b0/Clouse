@@ -1,24 +1,15 @@
 ﻿using UnityEngine;
 
-public class Rain : MonoBehaviour
-{
-    private void OnParticleCollision(GameObject other)
-    {  
-        if (other.gameObject.CompareTag("Cloud")) { return; }
+public class Rain : MonoBehaviour {
+    
+    private void OnParticleCollision(GameObject other) {  
+        if (other.layer != Constants.LAYER_FILLABLE) { return; }
 
-        const int layerMask = 1 << 4; // Water layer
-        if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out var hit, Mathf.Infinity, layerMask)) 
-        {
-            // print("Rain hits the lake");
+        const int layerMask = 1 << Constants.LAYER_WATER; // Water layer
+        if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out var hit, Mathf.Infinity, layerMask)) {
             var waterPart = hit.collider.gameObject.GetComponent<WaterPart>();
             waterPart.ParentWater.IncreaseWaterlevel();
         }
-        else 
-        {
-            // print("Rain hits a normal ground"); // Sound effect here
-        }
-        
-        // Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward) * 1000, Color.white);
-        
     }
+    
 }

@@ -13,7 +13,8 @@ public class GameLevel : MonoBehaviour {
     public Player PlayerInstance;
     public Transform PlayerSpawnPoint, CloudSpawnPoint;
     public Transform PlayerExitSpawnPoint, CloudExitSpawnPoint;
-
+    public Animation LoadingFadeAnimation;
+    
     public Box BoxPrefab, MetalBoxPrefab;
     
     private void Start() {
@@ -27,12 +28,18 @@ public class GameLevel : MonoBehaviour {
         }
         
         // Put player & cloud in their initial places
-        if (LevelsManager.EnteredFromLeft) {
-            PlayerInstance.MoveToPoint(PlayerSpawnPoint);
-            Cloud.me.position = CloudSpawnPoint.position;
+        // (Unless it is decided by checkpoint manager)
+        if (LevelsManager.LoadedByCheckpoint) {
+            LevelsManager.LoadedByCheckpoint = false;
+            CheckpointsManager.RestorePlayerCloudPos();
         } else {
-            PlayerInstance.MoveToPoint(PlayerExitSpawnPoint);
-            Cloud.me.position = CloudExitSpawnPoint.position;
+            if (LevelsManager.EnteredFromLeft) {
+                PlayerInstance.MoveToPoint(PlayerSpawnPoint);
+                Cloud.me.transform.position = CloudSpawnPoint.position;
+            } else {
+                PlayerInstance.MoveToPoint(PlayerExitSpawnPoint);
+                Cloud.me.transform.position = CloudExitSpawnPoint.position;
+            }
         }
         
         // Restore player boxes if there were any
@@ -48,51 +55,54 @@ public class GameLevel : MonoBehaviour {
         }
 
         // First game launch save
-        if (CheckpointsManager.InitialCheckpointSaved) return;
-        CheckpointsManager.InitialCheckpointSaved = true;
-        SaveLevelState(false);
-        CheckpointsManager.CreateCheckpoint();
-    }
-
-    public void RecreateLevelState(LevelState savedState) {
-        // TODO Re-create level from received level save
-        
-        // Set positions for regular boxes
-        var boxesOnLevel = GameObject.FindGameObjectsWithTag(Constants.TAG_BOX);
-        foreach (var box in boxesOnLevel) { Destroy(box); }
-        foreach (var box in savedState.Boxes) {
-            var newBox = Instantiate(box.IsMetal ? MetalBoxPrefab : BoxPrefab);
-            newBox.transform.position = box.LocalPos;
+        if (!CheckpointsManager.InitialCheckpointSaved) {
+            CheckpointsManager.InitialCheckpointSaved = true;
+            SaveLevelState(false);
+            CheckpointsManager.CreateCheckpoint();
         }
         
-        // Set state for generators (That is - activate those that should be activated)
-        var generatorsOnLevel = GameObject.FindGameObjectsWithTag(Constants.TAG_GENERATOR);
-        foreach (var generator in generatorsOnLevel) {
-            if (savedState.GeneratorsActivatedByPos[generator.transform.position]) {
-                generator.GetComponent<Generator>().Work();
-            }
-        }
-
-        // Set state for mirrors
-        var mirrorsOnLevel = GameObject.FindGameObjectsWithTag(Constants.TAG_MIRROR);
-        foreach (var mirror in mirrorsOnLevel) {
-            var mirrorSave = savedState.MirrorsByPos[mirror.transform.position];
-            var mirrorComponent = mirror.GetComponent<Mirror>();
-            mirror.transform.rotation = mirrorSave.Rotation;
-            mirrorComponent.dir = mirrorSave.Dir;
-            mirrorComponent.mode = mirrorSave.Mode;
-        }
-
-        // TODO Set state for water
+        if (LoadingFadeAnimation) LoadingFadeAnimation.Play(Constants.ANIM_FADE_IN);
     }
 
     public void SaveLevelState(bool endingOfLevel) {
+        if (endingOfLevel && LoadingFadeAnimation) LoadingFadeAnimation.Play(Constants.ANIM_FADE_OUT);
+        
         var newSave = new LevelState();
 
         // If it is not another level, boxes on player should be treated as normal boxes
         if (!endingOfLevel) {
             var initialHeldBox = GameObject.FindWithTag(Constants.TAG_HELD);
             if (initialHeldBox) initialHeldBox.tag = Constants.TAG_BOX;
+        }
+        
+        // Mark all boxes to move to next scene
+        var heldBox = GameObject.FindWithTag(Constants.TAG_HELD);
+        if (heldBox) {
+            // Box that will send raycast
+            var raycastOrigin = heldBox.transform.position;
+            
+            // All Boxes layer
+            const int layerMask = 1 << Constants.LAYER_FLOATING | 1 << Constants.LAYER_DEFAULT;
+            
+            // While boxes on top of origin can be found, mark them as held
+            while (Physics.Raycast(raycastOrigin, transform.TransformDirection(Vector3.up), out var hit, Mathf.Infinity, layerMask)) {
+                var foundBox = hit.collider.gameObject;
+                // No boxes found on top of original
+                if (!foundBox.CompareTag(Constants.TAG_BOX)) break;
+                foundBox.tag = Constants.TAG_HELD;
+                raycastOrigin = foundBox.transform.position;
+            }
+        
+            // Save marked boxes
+            var heldBoxes = GameObject.FindGameObjectsWithTag(Constants.TAG_HELD);
+            CheckpointsManager.PlayerBoxes = new LevelState.SavedBox[heldBoxes.Length];
+            for (var i = 0; i < heldBoxes.Length; i++) {
+                heldBoxes[i].transform.parent = PlayerInstance.transform;
+                var boxComponent = heldBoxes[i].GetComponent<Box>();
+                CheckpointsManager.PlayerBoxes[i] = new LevelState.SavedBox(boxComponent.isMetal, boxComponent.transform.localPosition);
+            }
+            Player.playerActive = true;
+            Player.isMovingBox = false;
         }
 
         // Save all boxes state
@@ -119,34 +129,49 @@ public class GameLevel : MonoBehaviour {
             var mirrorSave = new LevelState.SavedMirror(mirror.transform.rotation, mirrorComponent.mode, mirrorComponent.dir);
             newSave.MirrorsByPos.Add(mirror.transform.position, mirrorSave);
         }
-        
-        // Mark all boxes to move to next scene
-        var heldBox = GameObject.FindWithTag(Constants.TAG_HELD);
-        if (heldBox) {
-            var raycastOrigin = heldBox.transform.position;
-            const int layerMask = 1 << 8 + 1; // All Boxes layer
-            while (Physics.Raycast(raycastOrigin, transform.TransformDirection(Vector3.up), out var hit, Mathf.Infinity, layerMask)) {
-                var foundBox = hit.collider.gameObject;
-                if (!foundBox.CompareTag(Constants.TAG_BOX)) continue;
-                foundBox.tag = Constants.TAG_HELD;
-                raycastOrigin = foundBox.transform.position;
-            }
-        
-            // Save marked boxes
-            var heldBoxes = GameObject.FindGameObjectsWithTag(Constants.TAG_HELD);
-            CheckpointsManager.PlayerBoxes = new LevelState.SavedBox[heldBoxes.Length];
-            for (var i = 0; i < heldBoxes.Length; i++) {
-                heldBoxes[i].transform.parent = PlayerInstance.transform;
-                var boxComponent = heldBoxes[i].GetComponent<Box>();
-                CheckpointsManager.PlayerBoxes[i] = new LevelState.SavedBox(boxComponent.isMetal, boxComponent.transform.localPosition);
-            }
-            Player.playerActive = true;
-            Player.isMovingBox = false;
+
+        // Save water state
+        var waterOnLevel = FindObjectOfType<WaterRise>();
+        if (waterOnLevel) {
+            var serializedLayers = waterOnLevel.SerializeWaterLayers();
+            newSave.LayersOfWaterObject = serializedLayers;
         }
         
-        // TODO Save water state
-        
         CheckpointsManager.SaveLevelState(LevelIndex, newSave);
+    }
+    
+    private void RecreateLevelState(LevelState savedState) {
+        // Set positions for regular boxes
+        var boxesOnLevel = GameObject.FindGameObjectsWithTag(Constants.TAG_BOX);
+        foreach (var box in boxesOnLevel) { Destroy(box); }
+        foreach (var box in savedState.Boxes) {
+            var newBox = Instantiate(box.IsMetal ? MetalBoxPrefab : BoxPrefab);
+            newBox.transform.position = box.LocalPos;
+        }
+        
+        // Set state for generators (That is - activate those that should be activated)
+        var generatorsOnLevel = GameObject.FindGameObjectsWithTag(Constants.TAG_GENERATOR);
+        foreach (var generator in generatorsOnLevel) {
+            if (savedState.GeneratorsActivatedByPos[generator.transform.position]) {
+                generator.GetComponent<Generator>().Work();
+            }
+        }
+
+        // Set state for mirrors
+        var mirrorsOnLevel = GameObject.FindGameObjectsWithTag(Constants.TAG_MIRROR);
+        foreach (var mirror in mirrorsOnLevel) {
+            var mirrorSave = savedState.MirrorsByPos[mirror.transform.position];
+            var mirrorComponent = mirror.GetComponent<Mirror>();
+            mirror.transform.rotation = mirrorSave.Rotation;
+            mirrorComponent.dir = mirrorSave.Dir;
+            mirrorComponent.mode = mirrorSave.Mode;
+        }
+
+        // Set state for water
+        var waterOnLevel = FindObjectOfType<WaterRise>();
+        if (waterOnLevel) {
+            waterOnLevel.RecoverWaterFast(savedState.LayersOfWaterObject);
+        }
     }
 
 }

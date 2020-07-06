@@ -62,7 +62,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: b7351232f7fe18947927d9be8811d531, type: 2}
+  - {fileID: 2100000, guid: bf72b2bc87e7c334aa7373e67891030c, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -147,6 +147,8 @@ MonoBehaviour:
   lightningPrefab: {fileID: 178460, guid: a84cb58ef7faa67488076810242453b9, type: 3}
   mode: 1
   anim: {fileID: 3067688936259733064}
+  reflectionAngles: []
+  dir: 0
 --- !u!1 &3136404684839671378
 GameObject:
   m_ObjectHideFlags: 0
@@ -206,7 +208,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: bf72b2bc87e7c334aa7373e67891030c, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -238,8 +240,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 10, y: 3.5, z: 1.0000002}
-  m_Center: {x: 0, y: 0.8, z: 0}
+  m_Size: {x: 10, y: 2.5, z: 1.0000002}
+  m_Center: {x: 0, y: 0.3, z: 0}
 --- !u!1 &3136404685560346932
 GameObject:
   m_ObjectHideFlags: 0
@@ -263,7 +265,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3136404685560346932}
-  m_LocalRotation: {x: -0.08715578, y: 0, z: 0, w: 0.9961947}
+  m_LocalRotation: {x: -0.043619405, y: 0, z: 0, w: 0.9990483}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -272,7 +274,7 @@ Transform:
   - {fileID: 3136404686121973992}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: -10, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -5, y: 0, z: 0}
 --- !u!1 &3136404686121973995
 GameObject:
   m_ObjectHideFlags: 0

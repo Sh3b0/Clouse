@@ -20,7 +20,7 @@ public static class CheckpointsManager {
     public static void CreateCheckpoint() {
         _checkpointLevel = LevelsManager.CurrentLevel;
         _savedPlayerPos = Player.me.transform.position;
-        _savedCloudPos = Cloud.me.position;
+        _savedCloudPos = Cloud.me.transform.position;
 
         // Make all temp states saved, delete temp
         foreach (var tempSaveLevelIndex in TempLevelStates.Keys) {
@@ -33,16 +33,19 @@ public static class CheckpointsManager {
     }
 
     public static void LoadCheckpoint() {
-        // Re-load scene
-        GameLevel.CurrentLevelInstance.SaveLevelState(false);
-        LevelsManager.LoadLevel(_checkpointLevel);
-        
-        Player.me.transform.position = _savedPlayerPos;
-        Cloud.me.position = _savedCloudPos;
-        
-        // Return all objects on scene to their saved place, delete temp states
-        GameLevel.CurrentLevelInstance.RecreateLevelState(SavedLevelStates[_checkpointLevel]);
+        // Clear all changes made after checkpioint
         TempLevelStates.Clear();
+        
+        // Move to scene where checkpoint was made and re-store its state
+        // Restoration happens automatically in Start() of GameLevel
+        LevelsManager.LoadedByCheckpoint = true;
+        LevelsManager.LoadLevel(_checkpointLevel);
+    }
+
+    // Put player and cloud in saved places
+    public static void RestorePlayerCloudPos() {
+        Player.me.transform.position = _savedPlayerPos;
+        Cloud.me.transform.position = _savedCloudPos;
     }
 
     // Create temp level state

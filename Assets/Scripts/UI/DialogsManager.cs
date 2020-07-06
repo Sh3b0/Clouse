@@ -9,7 +9,7 @@ public class DialogsManager : MonoBehaviour {
     public Image Icon;
     public Text Text;
     public GameObject DialogLines;
-    public Button Next, Finish;
+    public Button Next, Finish, Skip;
     
     private int _currentLineIndex;
     private Constants.DialogEntity[] _currentDialog;
@@ -19,11 +19,13 @@ public class DialogsManager : MonoBehaviour {
         Instance = this;
         Next.onClick.AddListener(OnNextLine);
         Finish.onClick.AddListener(OnFinish);
+        Skip.onClick.AddListener(OnFinish);
     }
 
     public void OnDialog(int dialogIndex) {
         _currentDialog = Constants.Dialogs[dialogIndex];
         
+        Player.me.gameObject.GetComponent<Player>().anim.Move(0.0f);
         Player.playerActive = false;
         DialogLines.SetActive(true);
         Cursor.lockState = CursorLockMode.None;
