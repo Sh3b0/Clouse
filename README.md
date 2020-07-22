@@ -10,4 +10,5 @@ Created with Unity
 - Timur Rameev - 3D Modeler  
 - Asasnali Fazylzhan - Sounds and Music  
 
-## Game trailer: https://youtu.be/MDvu1Y5EG9I  
+## Game trailer:  
+https://youtu.be/MDvu1Y5EG9I  
